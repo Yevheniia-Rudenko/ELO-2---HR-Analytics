@@ -125,6 +125,7 @@ Our work combines **academic rigor** with **practical experimentation**, aiming 
 ## 🚀 Future Directions
 
 We plan to:
+
 - Expand our dataset with additional HR metrics
 - Deploy interactive dashboards
 - Implement end-to-end pipelines on **GCP**

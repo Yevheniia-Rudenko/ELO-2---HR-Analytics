@@ -7,37 +7,47 @@ This guide provides information on how to navigate and use this HR Analytics pro
 ## Project Structure
 
 ### 0_domain_study
+
 Background research, industry analysis, and domain knowledge documentation.
 
 ### 1_datasets
+
 - Raw data files
 - Processed datasets
 - Data dictionaries
 
 ### 2_data_preparation
+
 Scripts and notebooks for:
+
 - Data cleaning
 - Data transformation
 - Feature engineering
 
 ### 3_data_exploration
+
 Exploratory data analysis including:
+
 - Statistical summaries
 - Data visualization
 - Pattern identification
 
 ### 4_data_analysis
+
 Advanced analytics:
+
 - Predictive modeling
 - Statistical tests
 - Machine learning models
 
 ### 5_communication_strategy
+
 - Visualization templates
 - Reporting guidelines
 - Stakeholder communication
 
 ### 6_final_presentation
+
 Final deliverables and presentation materials.
 
 ## Getting Started
