@@ -25,16 +25,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18"
-
-      - name: Install ls-lint
-        run: npm install -g @ls-lint/ls-lint
-
       - name: Run ls-lint
-        run: ls-lint
+        uses: docker://lslintorg/ls-lint:1.11.2
+        with:
+          args: ls-lint
 
   python-syntax:
     runs-on: ubuntu-latest
