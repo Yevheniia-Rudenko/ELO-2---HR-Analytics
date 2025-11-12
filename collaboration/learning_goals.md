@@ -10,13 +10,13 @@
 
 ## Individual Goals
 
-### [Team Member Name]
+### Yevheniia Rudenko
 
 - Goal 1: [Description]
 - Goal 2: [Description]
 - Goal 3: [Description]
 
-### [Team Member Name]
+### Oleksandr Maksymikhin
 
 - Goal 1: [Description]
 - Goal 2: [Description]
