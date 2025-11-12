@@ -25,9 +25,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
       - name: Install ls-lint
-        run: |
-          curl -sL https://ls-lint.org/install.sh | sh -s -- -b /usr/local/bin
+        run: npm install -g @ls-lint/ls-lint
 
       - name: Run ls-lint
         run: ls-lint
