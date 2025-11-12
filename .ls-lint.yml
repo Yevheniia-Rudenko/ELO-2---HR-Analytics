@@ -1,0 +1,16 @@
+ls:
+  .dir: lowercase
+  .py: lowercase
+  .ipynb: lowercase
+  .md: lowercase
+  .txt: lowercase
+  .yml: lowercase
+  .yaml: lowercase
+  .json: lowercase
+
+ignore:
+  - .git
+  - node_modules
+  - venv
+  - .venv
+  - __pycache__

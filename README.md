@@ -1,5 +1,7 @@
 # 🌟 HR Analytics — ELO2 Project (MIT Emerging Talent)
 
+[![CI Checks](https://github.com/Yevheniia-Rudenko/ELO-2---HR-Analytics/workflows/CI%20Checks/badge.svg)](https://github.com/Yevheniia-Rudenko/ELO-2---HR-Analytics/actions)
+
 This repository contains the **HR Analytics project**, developed as part of the **MIT Emerging Talent ELO2 module**.  
 The project explores the **HR Analytics industry**, focusing on **modern analytical approaches, data-driven insights, and the implementation of machine learning and cloud technologies**.
 
@@ -8,13 +10,36 @@ The project explores the **HR Analytics industry**, focusing on **modern analyti
 ## 🎯 Project Overview
 
 The **HR Analytics** initiative aims to analyze key trends and technologies shaping the HR analytics field today.  
-Together **Yevheniia Rudenko** and **Oleksandr Maksymikhin**,  will explore and apply different **data analysis methodologies**, **ML techniques**, and **cloud-based solutions (such as Google Cloud Platform - GCP)** to understand how data can empower HR decision-making and workforce optimization.
+Together **Yevheniia Rudenko** and **Oleksandr Maksymikhin** will explore and apply different **data analysis methodologies**, **ML techniques**, and **cloud-based solutions (such as Google Cloud Platform - GCP)** to understand how data can empower HR decision-making and workforce optimization.
 
 Our focus includes:
+
 - Investigating **current HR analytics practices and their real-world applications**  
 - Implementing **predictive and descriptive models** using Python and popular data science libraries  
 - Exploring **cloud technologies** (GCP, BigQuery, etc.) for scalable data storage and computation  
 - Experimenting with **visualization and dashboarding tools** for effective communication of insights  
+
+---
+
+## 📁 Project Structure
+
+```text
+ELO-2---HR-Analytics/
+├── 0_domain_study/          # Background research and domain knowledge
+├── 1_datasets/              # Raw and cleaned datasets
+├── 2_data_preparation/      # Data cleaning and preprocessing
+├── 3_data_exploration/      # Exploratory data analysis
+├── 4_data_analysis/         # Statistical analysis and modeling
+├── 5_communication_strategy/# Visualizations and reporting
+├── 6_final_presentation/    # Final deliverables
+├── assets/                  # Images, charts, and media
+├── collaboration/           # Team docs and meeting notes
+├── notes/                   # Research notes and resources
+├── .github/workflows/       # CI/CD configuration
+├── .vscode/                 # VS Code settings
+├── requirements.txt         # Python dependencies
+└── README.md               # This file
+```
 
 ---
 
@@ -35,14 +60,58 @@ Our focus includes:
 - **Google Cloud Platform (GCP)** – BigQuery, AI Platform, Cloud Storage
 - **Visualization Tools** – Tableau, Looker Studio, Plotly
 - **Version Control** – Git & GitHub
-- **Collaboration Tools** – Google Colab, Jupyter Notebook
+- **Development** – VS Code, Jupyter Notebook, Google Colab
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python 3.9 or higher
+- Git
+- VS Code (recommended)
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/Yevheniia-Rudenko/ELO-2---HR-Analytics.git
+   cd ELO-2---HR-Analytics
+   ```
+
+2. Create a virtual environment:
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### Running the Project
+
+Refer to specific README files in each folder for detailed instructions on running notebooks and scripts.
 
 ---
 
 ## 🤝 Team
 
-- **Yevheniia Rudenko** 
-- **Oleksandr Maksymikhin**
+- **Yevheniia Rudenko** - [GitHub](https://github.com/Yevheniia-Rudenko)
+- **Oleksandr Maksymikhin** - [GitHub](https://github.com/OleksandrMaksymikhin)
+
+---
+
+## 📚 Documentation
+
+- [Contributing Guidelines](CONTRIBUTING.md)
+- [Project Guide](guide.md)
+- [License](LICENSE)
 
 ---
 
