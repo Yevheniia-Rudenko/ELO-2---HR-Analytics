@@ -7,9 +7,6 @@ ls:
   .yaml: lowercase
   .json: lowercase
 
-  .md:
-    regex: ".*"
-
 ignore:
   - .git
   - node_modules
