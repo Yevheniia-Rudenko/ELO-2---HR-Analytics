@@ -22,6 +22,12 @@
 - Goal 2: [Description]
 - Goal 3: [Description]
 
+### Majd ABUALSOUD
+
+- Goal 1: [Description]
+- Goal 2: [Description]
+- Goal 3: [Description]
+
 ## Technical Skills to Develop
 
 - [ ] Data cleaning and preparation
