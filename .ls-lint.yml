@@ -6,7 +6,9 @@ ls:
   .yml: lowercase
   .yaml: lowercase
   .json: lowercase
-  .md: regex: '.*'
+
+  .md:
+    regex: ".*"
 
 ignore:
   - .git
