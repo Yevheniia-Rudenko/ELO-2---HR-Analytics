@@ -10,7 +10,7 @@ The project explores the **HR Analytics industry**, focusing on **modern analyti
 ## 🎯 Project Overview
 
 The **HR Analytics** initiative aims to analyze key trends and technologies shaping the HR analytics field today.  
-Together **Yevheniia Rudenko** and **Oleksandr Maksymikhin** will explore and apply different **data analysis methodologies**, **ML techniques**, and **cloud-based solutions (such as Google Cloud Platform - GCP)** to understand how data can empower HR decision-making and workforce optimization.
+Together **Yevheniia Rudenko**, **Oleksandr Maksymikhin**, and **Majd ABUALSOUD** will explore and apply different **data analysis methodologies**, **ML techniques**, and **cloud-based solutions (such as Google Cloud Platform - GCP)** to understand how data can empower HR decision-making and workforce optimization.
 
 Our focus includes:
 
@@ -104,6 +104,7 @@ Refer to specific readme files in each folder for detailed instructions on runni
 
 - **Yevheniia Rudenko** - [GitHub](https://github.com/Yevheniia-Rudenko)
 - **Oleksandr Maksymikhin** - [GitHub](https://github.com/OleksandrMaksymikhin)
+- **Majd ABUALSOUD** - [GitHub](https://github.com/majdadel20)
 
 ---
 
