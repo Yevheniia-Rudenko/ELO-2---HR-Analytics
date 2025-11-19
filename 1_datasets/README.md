@@ -8,7 +8,7 @@ This folder contains all data used in the HR Analytics project.
 1_datasets/
 ├── raw_data/        # Original, unmodified data files
 ├── cleaned_data/    # Processed and cleaned datasets
-└── README.md        # This file
+└── readme.md        # This file
 ```
 
 ## Raw Data

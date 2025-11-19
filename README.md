@@ -38,7 +38,7 @@ ELO-2---HR-Analytics/
 ├── .github/workflows/       # CI/CD configuration
 ├── .vscode/                 # VS Code settings
 ├── requirements.txt         # Python dependencies
-└── README.md               # This file
+└── readme.md               # This file
 ```
 
 ---
@@ -96,7 +96,7 @@ ELO-2---HR-Analytics/
 
 ### Running the Project
 
-Refer to specific README files in each folder for detailed instructions on running notebooks and scripts.
+Refer to specific readme files in each folder for detailed instructions on running notebooks and scripts.
 
 ---
 
@@ -109,7 +109,7 @@ Refer to specific README files in each folder for detailed instructions on runni
 
 ## 📚 Documentation
 
-- [Contributing Guidelines](CONTRIBUTING.md)
+- [Contributing Guidelines](contributing.md)
 - [Project Guide](guide.md)
 - [License](LICENSE)
 
