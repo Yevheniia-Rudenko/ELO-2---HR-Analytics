@@ -2,11 +2,11 @@ ls:
   .dir: lowercase
   .py: lowercase
   .ipynb: lowercase
-  .md: lowercase
   .txt: lowercase
   .yml: lowercase
   .yaml: lowercase
   .json: lowercase
+  .md: regex: '.*'
 
 ignore:
   - .git
