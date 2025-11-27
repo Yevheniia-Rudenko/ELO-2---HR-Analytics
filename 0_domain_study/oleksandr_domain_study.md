@@ -59,7 +59,7 @@ HR analytics is frequently used to
 
 ## 7. Ethical Considerations
 
-Ethical considerations include ensuring employee privacy and protecting sensitive data. HR teams must avoid biased models that could unfairly affect hiring, promotion, or compensation decisions. Transparency is essential so employees understand how their data is being used. Organizations should follow legal guidelines and ethical frameworks to maintain trust and compliance. Data storage should follow data protection external legal, internal intercompany, generally acepted ethic rools and requirements. 
+Ethical considerations include ensuring employee privacy and protecting sensitive data. HR teams must avoid biased models that could unfairly affect hiring, promotion, or compensation decisions. Transparency is essential so employees understand how their data is being used. Organizations should follow legal guidelines and ethical frameworks to maintain trust and compliance. Data storage should follow data protection external legal, internal intercompany, generally acepted ethic rools and requirements.
 
 ## 8. Conclusion
 
