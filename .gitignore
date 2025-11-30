@@ -38,7 +38,7 @@ ENV/
 *~
 
 # Data files
-*.csv
+#*.csv
 *.xlsx
 *.xls
 *.db
