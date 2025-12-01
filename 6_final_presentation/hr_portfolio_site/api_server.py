@@ -13,8 +13,9 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 # Initialize BigQuery client
-# Replace 'YOUR_GCP_PROJECT_ID' with your actual GCP project ID
-client = bigquery.Client(project='YOUR_GCP_PROJECT_ID')
+import os
+project_id = os.environ.get('GCP_PROJECT_ID', 'core-trees-478718-g0')
+client = bigquery.Client(project=project_id)
 
 @app.route('/api/attrition-stats')
 def get_attrition_stats():
