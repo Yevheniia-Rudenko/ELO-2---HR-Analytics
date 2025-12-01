@@ -14,7 +14,7 @@ CORS(app)  # Enable CORS for all routes
 
 # Initialize BigQuery client
 import os
-project_id = os.environ.get('GCP_PROJECT_ID', 'core-trees-478718-g0')
+project_id = os.environ.get('GCP_PROJECT_ID', 'your-test-project-id')
 client = bigquery.Client(project=project_id)
 
 @app.route('/api/attrition-stats')

@@ -10,9 +10,9 @@ env_path = Path(__file__).parent / '.env'
 load_dotenv(dotenv_path=env_path)
 
 # Export configuration
-GCP_PROJECT_ID = os.getenv('GCP_PROJECT_ID', 'core-trees-478718-g0')
-GCP_DATASET = os.getenv('GCP_DATASET', 'IBMAnalytics')
-GCP_TABLE = os.getenv('GCP_TABLE', 'employee_attrition')
+GCP_PROJECT_ID = os.getenv('GCP_PROJECT_ID', 'your-test-project-id')
+GCP_DATASET = os.getenv('GCP_DATASET', 'TestDataset')
+GCP_TABLE = os.getenv('GCP_TABLE', 'test_table')
 FLASK_ENV = os.getenv('FLASK_ENV', 'development')
 FLASK_DEBUG = os.getenv('FLASK_DEBUG', 'True') == 'True'
 PORT = int(os.getenv('PORT', '5001'))
