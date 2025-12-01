@@ -44,6 +44,35 @@ ENV/
 *.db
 *.sqlite
 
+# 🔒 Security - NEVER commit these!
+# GCP credentials
+*.json
+!package.json
+!tsconfig.json
+credentials/
+.credentials/
+*-key.json
+service-account*.json
+gcp-credentials.json
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+*.env
+
+# Secrets and API keys
+secrets/
+*.secret
+*.pem
+*.key
+.secrets/
+
+# Config files with sensitive data
+config/production.py
+config/secrets.py
+*config.local.*
+
 # OS
 .DS_Store
 Thumbs.db

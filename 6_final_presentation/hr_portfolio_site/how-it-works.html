@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works - HR Analytics Platform</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .hiw-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .hiw-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .hiw-hero p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .section {
+            margin: 60px 0;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #667eea;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .section h3 {
+            color: #333;
+            font-size: 1.6rem;
+            margin: 30px 0 15px 0;
+        }
+        
+        .flow-diagram {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 40px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .flow-step {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            position: relative;
+        }
+        
+        .flow-step::after {
+            content: '→';
+            position: absolute;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: #667eea;
+        }
+        
+        .flow-step:last-child::after {
+            display: none;
+        }
+        
+        .flow-step .step-number {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            line-height: 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            padding: 25px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .feature-card h4 {
+            color: #667eea;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .tech-badge {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border-radius: 25px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .integration-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .integration-card {
+            padding: 30px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+        
+        .integration-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.2);
+        }
+        
+        .integration-card h4 {
+            color: #667eea;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+        
+        .use-case {
+            background: #f8f9fa;
+            padding: 25px;
+            border-left: 4px solid #28a745;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .use-case h4 {
+            color: #28a745;
+            margin-bottom: 10px;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 60px 0;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .flow-step::after {
+                content: '↓';
+                right: 50%;
+                top: auto;
+                bottom: -30px;
+                transform: translateX(50%);
+            }
+            
+            .hiw-hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                <div>
+                    <h1>HR Analytics Platform</h1>
+                    <p class="subtitle">Understanding How It Works</p>
+                </div>
+                <a href="index.html" style="background: white; color: #667eea; padding: 12px 30px; border-radius: 25px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: all 0.3s; display: inline-block;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    ← Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="hiw-hero">
+        <h1>🎯 How It Works</h1>
+        <p>A comprehensive guide to understanding, using, and integrating the HR Analytics Platform for data-driven workforce management</p>
+    </div>
+
+    <div class="container">
+        <!-- What is This Project -->
+        <section class="section">
+            <h2>📚 What is This Project?</h2>
+            <p style="font-size: 1.1rem; line-height: 1.8; color: #555;">
+                The <strong>HR Analytics Platform</strong> is an interactive web-based solution designed to help organizations analyze employee data, 
+                predict attrition risks, and make data-driven decisions about workforce management. Built as part of the 
+                <strong>MIT Emerging Talent program</strong>, this platform demonstrates the power of combining modern web technologies 
+                with cloud-based data analytics.
+            </p>
+            
+            <div class="feature-grid" style="margin-top: 30px;">
+                <div class="feature-card">
+                    <h4>📊 Real-Time Analytics</h4>
+                    <p>Interactive dashboards with live KPIs showing employee metrics, attrition rates, and satisfaction scores</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔮 Predictive Insights</h4>
+                    <p>Data-driven analysis to identify attrition risk factors and workforce trends</p>
+                </div>
+                <div class="feature-card">
+                    <h4>☁️ Cloud-Ready</h4>
+                    <p>Optional Google Cloud Platform integration for scalable, real-time data processing</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📱 Responsive Design</h4>
+                    <p>Works seamlessly on desktop, tablet, and mobile devices</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔒 Secure & Private</h4>
+                    <p>Built with security best practices, supporting both demo and production modes</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🎨 User-Friendly</h4>
+                    <p>Intuitive interface designed for HR professionals, managers, and employees</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="section">
+            <h2>⚙️ How It Works</h2>
+            
+            <h3>🔄 Data Flow Architecture</h3>
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <div class="step-number">1</div>
+                    <h4>Data Collection</h4>
+                    <p>Employee surveys, performance reviews, and HR records</p>
+                </div>
+                <div class="flow-step">
+                    <div class="step-number">2</div>
+                    <h4>Data Storage</h4>
+                    <p>Static files (demo) or BigQuery database (production)</p>
+                </div>
+                <div class="flow-step">
+                    <div class="step-number">3</div>
+                    <h4>Processing</h4>
+                    <p>JavaScript client or Python Flask API server</p>
+                </div>
+                <div class="flow-step">
+                    <div class="step-number">4</div>
+                    <h4>Visualization</h4>
+                    <p>Interactive charts and dashboards (Chart.js)</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 50px;">🎯 Two Operating Modes</h3>
+            
+            <div class="integration-options">
+                <div class="integration-card">
+                    <h4>🎨 Demo Mode (Default)</h4>
+                    <p><strong>Perfect for:</strong> Portfolio presentations, learning, prototyping</p>
+                    <ul style="margin-top: 15px; line-height: 1.8;">
+                        <li>✅ Works immediately - no setup required</li>
+                        <li>✅ Uses pre-loaded sample data (1,470 employees)</li>
+                        <li>✅ Fully functional offline</li>
+                        <li>✅ Fast loading times</li>
+                        <li>✅ No cloud costs</li>
+                    </ul>
+                    <div class="code-block" style="margin-top: 20px;">
+# Simply open the file
+open index.html
+
+# Or use local server
+python3 -m http.server 8000
+                    </div>
+                </div>
+
+                <div class="integration-card">
+                    <h4>☁️ Production Mode (GCP)</h4>
+                    <p><strong>Perfect for:</strong> Real company deployments, live data analysis</p>
+                    <ul style="margin-top: 15px; line-height: 1.8;">
+                        <li>☁️ Google Cloud Platform integration</li>
+                        <li>📊 BigQuery real-time data warehouse</li>
+                        <li>🔄 Automatic data synchronization</li>
+                        <li>📈 Scalable to millions of records</li>
+                        <li>🔐 Enterprise-grade security</li>
+                    </ul>
+                    <div class="code-block" style="margin-top: 20px;">
+# Start Flask API server
+python3 api_server.py
+
+# Enable in app.js
+USE_GCP_INTEGRATION = true
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- What It's Built On -->
+        <section class="section">
+            <h2>🛠️ Technology Foundation</h2>
+            
+            <h3>Frontend Technologies</h3>
+            <div class="tech-stack">
+                <span class="tech-badge">📝 HTML5 - Semantic structure</span>
+                <span class="tech-badge">🎨 CSS3 - Modern styling</span>
+                <span class="tech-badge">⚡ JavaScript ES6+ - Interactive features</span>
+                <span class="tech-badge">📊 Chart.js - Data visualization</span>
+                <span class="tech-badge">📱 Responsive Grid - Mobile-first</span>
+            </div>
+
+            <h3 style="margin-top: 30px;">Backend Technologies</h3>
+            <div class="tech-stack">
+                <span class="tech-badge">🐍 Python 3.9+ - Backend logic</span>
+                <span class="tech-badge">🌶️ Flask - REST API framework</span>
+                <span class="tech-badge">🔄 Flask-CORS - Cross-origin support</span>
+                <span class="tech-badge">📦 Virtual Environment - Dependency isolation</span>
+            </div>
+
+            <h3 style="margin-top: 30px;">Cloud Infrastructure (Optional)</h3>
+            <div class="tech-stack">
+                <span class="tech-badge">☁️ Google Cloud Platform - Cloud infrastructure</span>
+                <span class="tech-badge">📊 BigQuery - Data warehouse</span>
+                <span class="tech-badge">🚀 Cloud Run - Serverless deployment</span>
+                <span class="tech-badge">🔐 Service Accounts - Secure authentication</span>
+            </div>
+
+            <h3 style="margin-top: 30px;">Data & Analytics</h3>
+            <div class="tech-stack">
+                <span class="tech-badge">📈 IBM HR Dataset - 1,470 employee records</span>
+                <span class="tech-badge">🔍 SQL Queries - Data extraction</span>
+                <span class="tech-badge">📊 Statistical Analysis - Trend identification</span>
+                <span class="tech-badge">📉 Attrition Modeling - Risk prediction</span>
+            </div>
+        </section>
+
+        <!-- Use Cases -->
+        <section class="section">
+            <h2>💼 Real-World Use Cases</h2>
+            
+            <div class="use-case">
+                <h4>🏢 Case 1: HR Department - Monthly Review</h4>
+                <p><strong>Scenario:</strong> HR Manager reviews monthly attrition trends</p>
+                <p><strong>Process:</strong></p>
+                <ol style="line-height: 1.8;">
+                    <li>Opens Overview dashboard</li>
+                    <li>Checks Attrition Rate KPI (16.1% - above target 13%)</li>
+                    <li>Analyzes Department chart - Sales has highest attrition</li>
+                    <li>Reviews Overtime Impact - 30% of overtime workers leave</li>
+                    <li>Takes action: Reduces overtime, improves work-life balance</li>
+                </ol>
+                <p><strong>Result:</strong> Data-driven decision prevents further attrition</p>
+            </div>
+
+            <div class="use-case">
+                <h4>👤 Case 2: Employee - Quarterly Survey</h4>
+                <p><strong>Scenario:</strong> Employee fills out satisfaction survey</p>
+                <p><strong>Process:</strong></p>
+                <ol style="line-height: 1.8;">
+                    <li>Navigates to "Employee Questionary" tab</li>
+                    <li>Fills out form: Age, Department, Job Satisfaction, Work-Life Balance</li>
+                    <li>Adds comment about heavy workload</li>
+                    <li>Submits form (saved locally or to BigQuery)</li>
+                </ol>
+                <p><strong>Result:</strong> HR receives early warning about potential issues</p>
+            </div>
+
+            <div class="use-case">
+                <h4>👔 Case 3: Manager - Performance Review</h4>
+                <p><strong>Scenario:</strong> Manager evaluates team member for promotion</p>
+                <p><strong>Process:</strong></p>
+                <ol style="line-height: 1.8;">
+                    <li>Goes to "Managers Appraisal" section</li>
+                    <li>Enters employee details and performance rating (4/4)</li>
+                    <li>Indicates high promotion potential</li>
+                    <li>Submits evaluation</li>
+                </ol>
+                <p><strong>Result:</strong> Data available for HR talent management decisions</p>
+            </div>
+
+            <div class="use-case">
+                <h4>💼 Case 4: Executive - Strategic Planning</h4>
+                <p><strong>Scenario:</strong> CEO reviews workforce analytics for budget planning</p>
+                <p><strong>Process:</strong></p>
+                <ol style="line-height: 1.8;">
+                    <li>Reviews all dashboards and trends</li>
+                    <li>Analyzes age distribution and tenure patterns</li>
+                    <li>Identifies departments needing investment</li>
+                    <li>Plans retention programs and hiring strategy</li>
+                </ol>
+                <p><strong>Result:</strong> Strategic decisions backed by data</p>
+            </div>
+        </section>
+
+        <!-- Integration Guide -->
+        <section class="section">
+            <h2>🔌 How to Integrate This Platform</h2>
+            
+            <h3>Option 1: Standalone Deployment (Simple)</h3>
+            <div class="code-block">
+# Deploy to GitHub Pages (Free)
+git checkout -b gh-pages
+cp -r 6_final_presentation/hr_portfolio_site/* .
+git add .
+git commit -m "Deploy HR Analytics"
+git push origin gh-pages
+
+# Your site: https://username.github.io/repo-name/
+            </div>
+            
+            <h3 style="margin-top: 40px;">Option 2: Company Intranet Integration</h3>
+            <p>Embed into existing company portals:</p>
+            <div class="code-block">
+&lt;!-- In your company intranet --&gt;
+&lt;iframe 
+    src="https://your-hr-analytics.com" 
+    width="100%" 
+    height="800px" 
+    frameborder="0"
+&gt;&lt;/iframe&gt;
+            </div>
+
+            <h3 style="margin-top: 40px;">Option 3: Google Cloud Integration (Advanced)</h3>
+            <div style="background: #f8f9fa; padding: 25px; border-radius: 8px; margin-top: 20px;">
+                <h4 style="color: #667eea;">Step-by-Step GCP Integration:</h4>
+                <ol style="line-height: 2;">
+                    <li><strong>Create GCP Project</strong> - Set up new project in Google Cloud Console</li>
+                    <li><strong>Enable BigQuery API</strong> - Activate data warehouse service</li>
+                    <li><strong>Create Dataset & Table</strong> - Set up IBMAnalytics.employee_attrition</li>
+                    <li><strong>Upload Data</strong> - Import your employee CSV data</li>
+                    <li><strong>Create Service Account</strong> - Generate authentication credentials</li>
+                    <li><strong>Deploy API Server</strong> - Run Flask app on Cloud Run</li>
+                    <li><strong>Update Frontend</strong> - Set USE_GCP_INTEGRATION = true</li>
+                    <li><strong>Test Integration</strong> - Verify real-time data flow</li>
+                </ol>
+            </div>
+
+            <div class="code-block" style="margin-top: 20px;">
+# Quick GCP Setup Commands
+gcloud projects create your-project-id
+gcloud services enable bigquery.googleapis.com
+bq mk --dataset your-project-id:IBMAnalytics
+bq load --source_format=CSV \
+    your-project-id:IBMAnalytics.employee_attrition \
+    data.csv schema.json
+            </div>
+
+            <h3 style="margin-top: 40px;">Option 4: Custom Integration with Existing Systems</h3>
+            <div class="integration-options">
+                <div class="integration-card">
+                    <h4>🔗 HRIS Integration</h4>
+                    <p>Connect with Workday, SAP SuccessFactors, BambooHR</p>
+                    <ul style="margin-top: 10px;">
+                        <li>API endpoints for data sync</li>
+                        <li>Automatic employee updates</li>
+                        <li>Real-time attrition alerts</li>
+                    </ul>
+                </div>
+                <div class="integration-card">
+                    <h4>💬 Slack/Teams Alerts</h4>
+                    <p>Send notifications to communication platforms</p>
+                    <ul style="margin-top: 10px;">
+                        <li>High attrition warnings</li>
+                        <li>Survey completion reminders</li>
+                        <li>Weekly analytics reports</li>
+                    </ul>
+                </div>
+                <div class="integration-card">
+                    <h4>📊 Power BI / Tableau</h4>
+                    <p>Export data to BI tools for advanced analysis</p>
+                    <ul style="margin-top: 10px;">
+                        <li>CSV/Excel export</li>
+                        <li>API data access</li>
+                        <li>Custom dashboards</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits -->
+        <section class="section">
+            <h2>✨ Key Benefits</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>💰 Cost-Effective</h4>
+                    <p>Free demo mode, GCP free tier available, no expensive enterprise licenses needed</p>
+                </div>
+                <div class="feature-card">
+                    <h4>⚡ Fast Deployment</h4>
+                    <p>Demo works instantly, production deployment in under 1 hour</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📈 Scalable</h4>
+                    <p>Handles from 10 to 10 million employee records with cloud integration</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔧 Customizable</h4>
+                    <p>Open source code, easy to modify charts, add features, change branding</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📚 Well-Documented</h4>
+                    <p>Complete user guide, deployment docs, code comments, API reference</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🎓 Educational</h4>
+                    <p>Great for learning data analytics, web development, cloud technologies</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2 style="margin-bottom: 20px;">Ready to Get Started?</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 30px;">
+                Choose your path and start using the HR Analytics Platform today
+            </p>
+            <a href="index.html" class="cta-button" style="background: #28a745; color: white;">← Return to Platform</a>
+            <a href="index.html" class="cta-button">📊 Try Demo Now</a>
+            <a href="../../../USER_GUIDE.md" class="cta-button">📖 Read User Guide</a>
+            <a href="../../../DEPLOYMENT_GUIDE.md" class="cta-button">🚀 Deploy to Production</a>
+        </div>
+
+        <!-- Quick Links -->
+        <section class="section">
+            <h2>📚 Additional Resources</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>📖 User Guide (Ukrainian)</h4>
+                    <p>Complete walkthrough for end users with step-by-step instructions</p>
+                    <a href="../../../USER_GUIDE.md" style="color: #667eea; font-weight: bold;">Read Guide →</a>
+                </div>
+                <div class="feature-card">
+                    <h4>🚀 Deployment Guide</h4>
+                    <p>Technical documentation for developers and DevOps engineers</p>
+                    <a href="../../../DEPLOYMENT_GUIDE.md" style="color: #667eea; font-weight: bold;">View Guide →</a>
+                </div>
+                <div class="feature-card">
+                    <h4>🎯 Improvement Roadmap</h4>
+                    <p>Future features, ML integration, advanced analytics plans</p>
+                    <a href="../../../IMPROVEMENT_ROADMAP.md" style="color: #667eea; font-weight: bold;">See Roadmap →</a>
+                </div>
+                <div class="feature-card">
+                    <h4>💻 GitHub Repository</h4>
+                    <p>Source code, issues, pull requests, and contributions</p>
+                    <a href="https://github.com/Yevheniia-Rudenko/ELO-2---HR-Analytics" style="color: #667eea; font-weight: bold;">Visit Repo →</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024-2025 HR Analytics Team | MIT Emerging Talent Program</p>
+            <p>
+                <a href="index.html">Back to Dashboard</a> | 
+                <a href="https://github.com/Yevheniia-Rudenko/ELO-2---HR-Analytics">GitHub</a> | 
+                <a href="../../../README.md">Documentation</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

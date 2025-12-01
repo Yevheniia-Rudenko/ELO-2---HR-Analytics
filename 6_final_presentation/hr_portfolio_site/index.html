@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HR Analytics System - Employee Attrition Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>HR Analytics System</h1>
+        <p class="subtitle">Employee Attrition & Performance Management</p>
+      </div>
+    </header>
+
+    <nav class="main-nav">
+      <div class="container nav-container">
+        <ul class="nav-tabs">
+          <li>
+            <a href="#overview" class="tab-link active" data-tab="overview"
+              >📊 Overview</a
+            >
+          </li>
+          <li>
+            <a href="#questionary" class="tab-link" data-tab="questionary"
+              >📝 Survey</a
+            >
+          </li>
+          <li>
+            <a href="#appraisal" class="tab-link" data-tab="appraisal"
+              >⭐ Reviews</a
+            >
+          </li>
+          <li>
+            <a href="#data-insights" class="tab-link" data-tab="data-insights"
+              >📈 Insights</a
+            >
+          </li>
+          <li>
+            <a href="#about" class="tab-link" data-tab="about">ℹ️ About</a>
+          </li>
+        </ul>
+        <div class="nav-actions">
+          <a href="how-it-works.html" class="nav-btn btn-docs">📚 Docs</a>
+          <a href="test-data-flow.html" target="_blank" class="nav-btn btn-test">🧪 Test</a>
+          <div class="api-status">
+            <span id="apiStatusIndicator" class="status-dot"></span>
+            <span id="apiStatusText">API</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container">
+      <!-- Welcome Banner -->
+      <div class="welcome-banner" style="background: var(--gradient-primary); color: white; padding: 30px; border-radius: 12px; margin-top: 30px; margin-bottom: 30px; box-shadow: var(--shadow-xl);">
+        <h2 style="margin: 0 0 10px 0; font-size: 28px;">👋 Welcome to HR Analytics System</h2>
+        <p style="margin: 0; font-size: 16px; opacity: 0.95;">
+          Your comprehensive platform for employee data analysis, satisfaction surveys, and performance management. 
+          Navigate through tabs to explore analytics, submit surveys, conduct appraisals, and view real-time insights.
+        </p>
+        <div style="margin-top: 20px; display: flex; gap: 15px; flex-wrap: wrap;">
+          <a href="#questionary" class="quick-action-btn" onclick="document.querySelector('[data-tab=questionary]').click()">
+            📝 Take Survey
+          </a>
+          <a href="#data-insights" class="quick-action-btn" onclick="document.querySelector('[data-tab=data-insights]').click()">
+            📈 View Live Data
+          </a>
+          <a href="test-data-flow.html" target="_blank" class="quick-action-btn">
+            🧪 Test Lab
+          </a>
+          <a href="how-it-works.html" class="quick-action-btn">
+            📚 Learn More
+          </a>
+        </div>
+      </div>
+
+      <!-- Overview Tab -->
+      <section id="overview" class="tab-content active">
+        <div class="page-header">
+          <h2>📊 HR Analytics Dashboard</h2>
+          <p class="page-description">Real-time insights into workforce metrics, attrition patterns, and employee satisfaction. Use these analytics to identify trends, predict risks, and make data-driven HR decisions.</p>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-container">
+          <div class="kpi-card">
+            <div class="kpi-icon">👥</div>
+            <h3>Total Employees</h3>
+            <p class="kpi-value">1,470</p>
+            <span class="kpi-label">Active headcount</span>
+            <div class="kpi-trend positive">↑ 2.3% from last quarter</div>
+          </div>
+          <div class="kpi-card highlight">
+            <div class="kpi-icon">⚠️</div>
+            <h3>Attrition Rate</h3>
+            <p class="kpi-value">16.1%</p>
+            <span class="kpi-label">237 employees left</span>
+            <div class="kpi-trend negative">Above industry avg (13%)</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon">😊</div>
+            <h3>Avg. Job Satisfaction</h3>
+            <p class="kpi-value">2.73/4</p>
+            <span class="kpi-label">Employee survey score</span>
+            <div class="kpi-trend neutral">↔ Stable</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon">📅</div>
+            <h3>Avg. Tenure</h3>
+            <p class="kpi-value">7.0 years</p>
+            <span class="kpi-label">Years at company</span>
+            <div class="kpi-trend positive">↑ 0.5 years YoY</div>
+          </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-grid">
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>🏢 Attrition by Department</h3>
+              <p class="chart-description">Shows which departments have the highest employee turnover. R&D leads with 133 departures (56%), followed by Sales with 92 (39%).</p>
+            </div>
+            <canvas id="attritionDeptChart"></canvas>
+            <div class="chart-insight">
+              <strong>💡 Key Insight:</strong> R&D department requires immediate attention with 133 departures, representing 56.1% of total attrition.
+            </div>
+          </div>
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>👤 Attrition by Age Group</h3>
+              <p class="chart-description">Middle-aged employees (26-35) show highest attrition with 116 departures (49% of total), while younger employees (18-25) account for 40 departures (17%).</p>
+            </div>
+            <canvas id="attritionAgeChart"></canvas>
+            <div class="chart-insight">
+              <strong>💡 Key Insight:</strong> Focus on mentorship programs for employees under 35 to improve retention.
+            </div>
+          </div>
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>⏰ Overtime Impact on Attrition</h3>
+              <p class="chart-description">Employees working overtime show 3x higher attrition. Work-life balance is a critical retention factor.</p>
+            </div>
+            <canvas id="overtimeChart"></canvas>
+            <div class="chart-insight">
+              <strong>💡 Key Insight:</strong> Reducing overtime could prevent up to 30% of attrition cases.
+            </div>
+          </div>
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>⚖️ Work-Life Balance Distribution</h3>
+              <p class="chart-description">Majority of employees rate work-life balance as "Better" (3/4), but 29% report poor balance (ratings 1-2) requiring intervention.</p>
+            </div>
+            <canvas id="workLifeBalanceChart"></canvas>
+            <div class="chart-insight">
+              <strong>💡 Key Insight:</strong> Target employees with rating 1-2 for immediate support and flexible work options.
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional Insights -->
+        <div class="insights-section">
+          <h3>Key Insights</h3>
+          <div class="insight-cards">
+            <div class="insight-card">
+              <h4>🚨 High Risk Factor</h4>
+              <p>
+                Employees working overtime have
+                <strong>3x higher</strong> attrition rate
+              </p>
+            </div>
+            <div class="insight-card">
+              <h4>👥 Department Alert</h4>
+              <p>
+                R&D department shows highest attrition at
+                <strong>133 departures (56%)</strong>
+              </p>
+            </div>
+            <div class="insight-card">
+              <h4>📊 Age Correlation</h4>
+              <p>
+                Young employees (18-25) have <strong>35% attrition</strong> rate
+              </p>
+            </div>
+            <div class="insight-card">
+              <h4>✈️ Travel Impact</h4>
+              <p>
+                Frequent business travelers are at <strong>24.9% risk</strong>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Questionary Tab -->
+      <section id="questionary" class="tab-content">
+        <div class="page-header">
+          <h2>📝 Employee Satisfaction Questionary</h2>
+          <p class="page-description">
+            Help us understand your workplace experience through this bi-annual survey. 
+            Your feedback drives improvements in work environment, culture, and employee well-being. 
+            All responses are confidential and used to identify areas for organizational growth.
+          </p>
+        </div>
+
+        <div class="info-box">
+          <h3>📊 Why This Matters</h3>
+          <ul>
+            <li><strong>Voice Your Opinion:</strong> Share honest feedback about your work experience</li>
+            <li><strong>Drive Change:</strong> Your responses directly influence HR policies and initiatives</li>
+            <li><strong>Track Trends:</strong> Help identify patterns in employee satisfaction over time</li>
+            <li><strong>Improve Culture:</strong> Contribute to building a better workplace for everyone</li>
+          </ul>
+        </div>
+
+        <h3 style="margin-top: 2rem;">Complete Your Survey</h3>
+        <p class="form-description">
+          This questionnaire should be completed every 6 months to track
+          employee satisfaction and well-being.
+        </p>
+
+        <form id="employeeQuestionnaire" class="questionnaire-form">
+          <div class="form-group">
+            <label for="employeeId">Employee ID</label>
+            <input
+              type="text"
+              id="employeeId"
+              name="employeeId"
+              required
+              placeholder="Enter your employee ID"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="environmentSatisfaction"
+              >Environment Satisfaction</label
+            >
+            <select
+              id="environmentSatisfaction"
+              name="environmentSatisfaction"
+              required
+            >
+              <option value="">Select satisfaction level...</option>
+              <option value="1">1 - Low</option>
+              <option value="2">2 - Medium</option>
+              <option value="3">3 - High</option>
+              <option value="4">4 - Very High</option>
+            </select>
+            <span class="field-description"
+              >How satisfied are you with your work environment?</span
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="jobSatisfaction">Job Satisfaction</label>
+            <select id="jobSatisfaction" name="jobSatisfaction" required>
+              <option value="">Select satisfaction level...</option>
+              <option value="1">1 - Low</option>
+              <option value="2">2 - Medium</option>
+              <option value="3">3 - High</option>
+              <option value="4">4 - Very High</option>
+            </select>
+            <span class="field-description"
+              >How satisfied are you with your current role and
+              responsibilities?</span
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="relationshipSatisfaction"
+              >Relationship Satisfaction</label
+            >
+            <select
+              id="relationshipSatisfaction"
+              name="relationshipSatisfaction"
+              required
+            >
+              <option value="">Select satisfaction level...</option>
+              <option value="1">1 - Low</option>
+              <option value="2">2 - Medium</option>
+              <option value="3">3 - High</option>
+              <option value="4">4 - Very High</option>
+            </select>
+            <span class="field-description"
+              >How satisfied are you with workplace relationships and team
+              collaboration?</span
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="workLifeBalance">Work-Life Balance</label>
+            <select id="workLifeBalance" name="workLifeBalance" required>
+              <option value="">Select balance level...</option>
+              <option value="1">1 - Bad</option>
+              <option value="2">2 - Good</option>
+              <option value="3">3 - Better</option>
+              <option value="4">4 - Best</option>
+            </select>
+            <span class="field-description"
+              >How would you rate your work-life balance?</span
+            >
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+              Submit Questionnaire
+            </button>
+            <button type="reset" class="btn btn-secondary">Reset Form</button>
+          </div>
+        </form>
+
+        <div
+          id="questionnaireSuccess"
+          class="success-message"
+          style="display: none"
+        >
+          <h3>✓ Questionnaire Submitted Successfully</h3>
+          <p>
+            Thank you for completing the employee satisfaction survey. Your
+            feedback helps us improve the workplace.
+          </p>
+        </div>
+      </section>
+
+      <!-- Managers Appraisal Tab -->
+      <section id="appraisal" class="tab-content">
+        <div class="page-header">
+          <h2>⭐ Manager's Performance Appraisal</h2>
+          <p class="page-description">
+            Conduct fair and comprehensive annual performance evaluations for your team members. 
+            This structured appraisal process helps recognize achievements, identify development areas, 
+            and align individual goals with organizational objectives.
+          </p>
+        </div>
+
+        <div class="info-box" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left-color: var(--primary-color);">
+          <h3>📋 Appraisal Best Practices</h3>
+          <ul>
+            <li><strong>Be Specific:</strong> Use concrete examples and measurable achievements</li>
+            <li><strong>Stay Objective:</strong> Focus on performance, not personality</li>
+            <li><strong>Provide Balance:</strong> Acknowledge strengths and areas for improvement</li>
+            <li><strong>Set Goals:</strong> Collaborate on clear, achievable development objectives</li>
+            <li><strong>Regular Feedback:</strong> Don't wait for annual reviews - provide ongoing guidance</li>
+          </ul>
+        </div>
+
+        <h3 style="margin-top: 2rem;">Team Performance Overview</h3>
+        <p class="form-description">
+          Annual performance evaluation for team members (completed at
+          year-end).
+        </p>
+
+        <div class="employee-list-section">
+          <h3>Your Team Members</h3>
+          <div id="employeeList" class="employee-cards">
+            <!-- Employee cards will be generated by JavaScript -->
+            <div class="employee-card" data-employee-id="1">
+              <div class="employee-info">
+                <h4>John Smith</h4>
+                <p>Sales Representative | ID: EMP001</p>
+                <span class="status pending">Appraisal Pending</span>
+              </div>
+              <button
+                class="btn btn-small"
+                onclick="openAppraisalForm('EMP001', 'John Smith')"
+              >
+                Evaluate
+              </button>
+            </div>
+            <div class="employee-card" data-employee-id="2">
+              <div class="employee-info">
+                <h4>Sarah Johnson</h4>
+                <p>Research Scientist | ID: EMP002</p>
+                <span class="status pending">Appraisal Pending</span>
+              </div>
+              <button
+                class="btn btn-small"
+                onclick="openAppraisalForm('EMP002', 'Sarah Johnson')"
+              >
+                Evaluate
+              </button>
+            </div>
+            <div class="employee-card" data-employee-id="3">
+              <div class="employee-info">
+                <h4>Michael Chen</h4>
+                <p>Laboratory Technician | ID: EMP003</p>
+                <span class="status completed">Completed</span>
+              </div>
+              <button
+                class="btn btn-small btn-view"
+                onclick="viewAppraisal('EMP003')"
+              >
+                View
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          id="appraisalFormSection"
+          class="appraisal-form-section"
+          style="display: none"
+        >
+          <h3>Performance Appraisal Form</h3>
+          <p class="evaluating-employee">
+            Evaluating: <strong id="employeeName"></strong> (<span
+              id="employeeIdDisplay"
+            ></span
+            >)
+          </p>
+
+          <form id="appraisalForm" class="appraisal-form">
+            <input type="hidden" id="appraisalEmployeeId" name="employeeId" />
+
+            <div class="form-group">
+              <label for="jobInvolvement">Job Involvement</label>
+              <select id="jobInvolvement" name="jobInvolvement" required>
+                <option value="">Select involvement level...</option>
+                <option value="1">1 - Low</option>
+                <option value="2">2 - Medium</option>
+                <option value="3">3 - High</option>
+                <option value="4">4 - Very High</option>
+              </select>
+              <span class="field-description"
+                >How involved and committed is the employee in their work?</span
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="performanceRating">Performance Rating</label>
+              <select id="performanceRating" name="performanceRating" required>
+                <option value="">Select performance rating...</option>
+                <option value="1">1 - Low</option>
+                <option value="2">2 - Good</option>
+                <option value="3">3 - Excellent</option>
+                <option value="4">4 - Outstanding</option>
+              </select>
+              <span class="field-description"
+                >Overall performance rating for the year</span
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="managerComments">Manager's Comments (Optional)</label>
+              <textarea
+                id="managerComments"
+                name="managerComments"
+                rows="4"
+                placeholder="Add any additional comments or observations..."
+              ></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">
+                Submit Appraisal
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="closeAppraisalForm()"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div
+          id="appraisalSuccess"
+          class="success-message"
+          style="display: none"
+        >
+          <h3>✓ Performance Appraisal Submitted</h3>
+          <p>The performance evaluation has been recorded successfully.</p>
+        </div>
+      </section>
+
+      <!-- About Us Tab -->
+      <!-- Live Data Insights Tab -->
+      <section id="data-insights" class="tab-content">
+        <div class="page-header">
+          <h2>📈 Live Data Insights & Analytics</h2>
+          <p class="page-description">
+            Real-time statistics and visualizations based on actual submitted survey responses and performance appraisals. 
+            Watch as data flows from forms to dashboards in real-time!
+          </p>
+        </div>
+
+        <div class="info-box" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left-color: var(--success-color);">
+          <h3>🔄 How Live Updates Work</h3>
+          <p>
+            Every time an employee submits a questionnaire or a manager completes an appraisal, 
+            the data is <strong>instantly saved to the backend API</strong> and calculations are performed. 
+            The statistics below update automatically within 500ms, showing the latest trends and insights.
+          </p>
+          <p style="margin-top: 10px;">
+            <strong>💡 Tip:</strong> Try submitting a survey or appraisal, then return to this tab to see the updated metrics!
+          </p>
+        </div>
+
+        <!-- Real-time Statistics Grid -->
+        <div class="kpi-container" style="margin-bottom: 30px;">
+          <div class="kpi-card">
+            <div class="kpi-icon">📝</div>
+            <h3>Total Surveys</h3>
+            <p class="kpi-value" id="liveTotalSurveys">0</p>
+            <span class="kpi-label">Employee responses</span>
+            <div class="kpi-trend neutral" id="surveyTrend">Real-time data</div>
+          </div>
+          <div class="kpi-card highlight">
+            <div class="kpi-icon">😊</div>
+            <h3>Live Satisfaction</h3>
+            <p class="kpi-value" id="liveSatisfaction">0.0/4</p>
+            <span class="kpi-label">Current average</span>
+            <div class="kpi-trend positive" id="satisfactionTrend">From live data</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon">⭐</div>
+            <h3>Total Appraisals</h3>
+            <p class="kpi-value" id="liveTotalAppraisals">0</p>
+            <span class="kpi-label">Manager reviews</span>
+            <div class="kpi-trend neutral" id="appraisalTrend">Real-time data</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon">🎯</div>
+            <h3>Live Performance</h3>
+            <p class="kpi-value" id="livePerformance">0.0/4</p>
+            <span class="kpi-label">Current average</span>
+            <div class="kpi-trend positive" id="performanceTrend">From live data</div>
+          </div>
+        </div>
+
+        <!-- Detailed Satisfaction Breakdown -->
+        <div class="charts-grid">
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>📊 Live Satisfaction Breakdown</h3>
+              <p class="chart-description">
+                Real-time employee satisfaction scores across four key areas, calculated from actual survey submissions.
+              </p>
+            </div>
+            <canvas id="liveSatisfactionChart"></canvas>
+            <div class="chart-insight">
+              <strong>💡 Insight:</strong> <span id="satisfactionInsight">Submit surveys to see insights</span>
+            </div>
+          </div>
+
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>📈 Satisfaction Trends</h3>
+              <p class="chart-description">
+                Track how overall satisfaction changes as more employees submit their feedback.
+              </p>
+            </div>
+            <canvas id="satisfactionTrendChart"></canvas>
+            <div class="chart-insight">
+              <strong>📊 Data Points:</strong> <span id="trendDataPoints">0 submissions tracked</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Statistics Table -->
+        <div class="data-table-section">
+          <h3>📋 Detailed Statistics</h3>
+          <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+            <div class="stat-detail-card">
+              <h4>Environment Satisfaction</h4>
+              <div class="stat-value-large" id="detailEnv">0.0</div>
+              <div class="stat-progress">
+                <div class="progress-bar" id="progressEnv" style="width: 0%"></div>
+              </div>
+              <p class="stat-note">Workplace environment rating</p>
+            </div>
+            <div class="stat-detail-card">
+              <h4>Job Satisfaction</h4>
+              <div class="stat-value-large" id="detailJob">0.0</div>
+              <div class="stat-progress">
+                <div class="progress-bar" id="progressJob" style="width: 0%"></div>
+              </div>
+              <p class="stat-note">Job role satisfaction</p>
+            </div>
+            <div class="stat-detail-card">
+              <h4>Relationship Satisfaction</h4>
+              <div class="stat-value-large" id="detailRel">0.0</div>
+              <div class="stat-progress">
+                <div class="progress-bar" id="progressRel" style="width: 0%"></div>
+              </div>
+              <p class="stat-note">Team relationships</p>
+            </div>
+            <div class="stat-detail-card">
+              <h4>Work-Life Balance</h4>
+              <div class="stat-value-large" id="detailWLB">0.0</div>
+              <div class="stat-progress">
+                <div class="progress-bar" id="progressWLB" style="width: 0%"></div>
+              </div>
+              <p class="stat-note">Work-life balance rating</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Submissions -->
+        <div class="recent-submissions-section" style="margin-top: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3>🕐 Recent Submissions</h3>
+            <button onclick="refreshLiveInsights()" class="btn btn-small" style="background: var(--success-color);">🔄 Refresh Data</button>
+          </div>
+          <div id="recentSubmissionsList" class="recent-list">
+            <p style="text-align: center; color: #666; padding: 20px;">No submissions yet. Fill out a survey to see data here!</p>
+          </div>
+        </div>
+
+        <!-- Data Export Options -->
+        <div class="export-section" style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 12px;">
+          <h3>💾 Data Management</h3>
+          <p style="margin-bottom: 15px;">Export or manage your collected data</p>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button onclick="exportDataAsJSON()" class="btn btn-small">📄 Export as JSON</button>
+            <button onclick="exportDataAsCSV()" class="btn btn-small">📊 Export as CSV</button>
+            <button onclick="viewAllData()" class="btn btn-small" style="background: var(--primary-color);">👁️ View All Data</button>
+            <button onclick="clearAllData()" class="btn btn-small" style="background: #ef4444;">🗑️ Clear All Data</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="tab-content">
+        <div class="page-header">
+          <h2>👥 About This Project</h2>
+          <p class="page-description">
+            A comprehensive HR Analytics platform developed for the MIT Emerging Talent program, 
+            combining machine learning, cloud infrastructure, and interactive dashboards to 
+            transform employee data into actionable insights.
+          </p>
+        </div>
+
+        <!-- Project Overview -->
+        <div class="about-section">
+          <div class="about-header">
+            <h3>🎯 Project Overview</h3>
+          </div>
+          <div class="about-content">
+            <p class="lead">
+              The <strong>HR Analytics project</strong> is developed as part of
+              the <strong>MIT Emerging Talent ELO-2 module</strong>, focusing on
+              data-driven insights and machine learning applications in human
+              resources management.
+            </p>
+
+            <div class="project-highlights">
+              <div class="highlight-item">
+                <span class="highlight-icon">📊</span>
+                <div>
+                  <h4>Data Analysis</h4>
+                  <p>
+                    Comprehensive exploratory data analysis using Python,
+                    pandas, and visualization libraries
+                  </p>
+                </div>
+              </div>
+              <div class="highlight-item">
+                <span class="highlight-icon">☁️</span>
+                <div>
+                  <h4>Cloud Infrastructure</h4>
+                  <p>
+                    Google Cloud Platform integration with BigQuery for scalable
+                    data storage and analysis
+                  </p>
+                </div>
+              </div>
+              <div class="highlight-item">
+                <span class="highlight-icon">🤖</span>
+                <div>
+                  <h4>Machine Learning</h4>
+                  <p>
+                    Predictive models for employee attrition using scikit-learn
+                    and modern ML techniques
+                  </p>
+                </div>
+              </div>
+              <div class="highlight-item">
+                <span class="highlight-icon">📈</span>
+                <div>
+                  <h4>Interactive Dashboards</h4>
+                  <p>
+                    Real-time visualization with Looker Studio and Chart.js for
+                    stakeholder insights
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Technology Stack -->
+        <div class="about-section">
+          <div class="about-header">
+            <h3>🛠️ Technology Stack</h3>
+          </div>
+          <div class="tech-stack">
+            <div class="tech-category">
+              <h4>Data Analysis & ML</h4>
+              <div class="tech-badges">
+                <span class="tech-badge">Python 3.9+</span>
+                <span class="tech-badge">pandas</span>
+                <span class="tech-badge">NumPy</span>
+                <span class="tech-badge">scikit-learn</span>
+                <span class="tech-badge">Matplotlib</span>
+                <span class="tech-badge">Seaborn</span>
+              </div>
+            </div>
+            <div class="tech-category">
+              <h4>Cloud & Data Storage</h4>
+              <div class="tech-badges">
+                <span class="tech-badge">Google Cloud Platform</span>
+                <span class="tech-badge">BigQuery</span>
+                <span class="tech-badge">Looker Studio</span>
+                <span class="tech-badge">Cloud Storage</span>
+              </div>
+            </div>
+            <div class="tech-category">
+              <h4>Web Development</h4>
+              <div class="tech-badges">
+                <span class="tech-badge">HTML5</span>
+                <span class="tech-badge">CSS3</span>
+                <span class="tech-badge">JavaScript ES6+</span>
+                <span class="tech-badge">Chart.js</span>
+              </div>
+            </div>
+            <div class="tech-category">
+              <h4>Tools & Workflow</h4>
+              <div class="tech-badges">
+                <span class="tech-badge">Git & GitHub</span>
+                <span class="tech-badge">VS Code</span>
+                <span class="tech-badge">Jupyter Notebooks</span>
+                <span class="tech-badge">GitHub Actions</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Team Section -->
+        <div class="about-section">
+          <div class="about-header">
+            <h3>👥 Our Team</h3>
+          </div>
+          <div class="team-grid">
+            <div class="team-member">
+              <div class="member-avatar">YR</div>
+              <h4>Yevheniia Rudenko</h4>
+              <p class="member-role">Project Lead & Data Scientist</p>
+              <p class="member-bio">
+                Leading the project development, implementing GCP
+                infrastructure, conducting exploratory data analysis, and
+                building predictive models for employee attrition.
+              </p>
+              <div class="member-skills">
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">Machine Learning</span>
+                <span class="skill-tag">GCP</span>
+                <span class="skill-tag">Data Visualization</span>
+              </div>
+              <div class="member-links">
+                <a
+                  href="https://github.com/Yevheniia-Rudenko"
+                  target="_blank"
+                  class="social-link"
+                  >GitHub</a
+                >
+              </div>
+            </div>
+
+            <div class="team-member">
+              <div class="member-avatar">OM</div>
+              <h4>Oleksandr Maksymikhin</h4>
+              <p class="member-role">Data Analyst & Researcher</p>
+              <p class="member-bio">
+                Conducting in-depth statistical analysis, researching HR
+                analytics methodologies, and contributing to data preparation
+                and model validation.
+              </p>
+              <div class="member-skills">
+                <span class="skill-tag">Statistics</span>
+                <span class="skill-tag">Data Analysis</span>
+                <span class="skill-tag">Research</span>
+                <span class="skill-tag">Documentation</span>
+              </div>
+              <div class="member-links">
+                <a
+                  href="https://github.com/oleksandr-maksymikhin"
+                  target="_blank"
+                  class="social-link"
+                  >GitHub</a
+                >
+              </div>
+            </div>
+
+            <div class="team-member">
+              <div class="member-avatar">MA</div>
+              <h4>Majd ABUALSOUD</h4>
+              <p class="member-role">Analytics & Documentation Specialist</p>
+              <p class="member-bio">
+                Supporting data exploration, creating comprehensive
+                documentation, and ensuring project quality through testing and
+                validation.
+              </p>
+              <div class="member-skills">
+                <span class="skill-tag">Data Exploration</span>
+                <span class="skill-tag">Documentation</span>
+                <span class="skill-tag">Testing</span>
+                <span class="skill-tag">Quality Assurance</span>
+              </div>
+              <div class="member-links">
+                <a
+                  href="https://github.com/Majd-ABUALSOUD"
+                  target="_blank"
+                  class="social-link"
+                  >GitHub</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dataset Information -->
+        <div class="about-section">
+          <div class="about-header">
+            <h3>📊 Dataset Information</h3>
+          </div>
+          <div class="about-content">
+            <p>
+              <strong
+                >IBM HR Analytics Employee Attrition & Performance
+                Dataset</strong
+              >
+            </p>
+            <div class="dataset-stats">
+              <div class="stat-item">
+                <span class="stat-number">1,470</span>
+                <span class="stat-label">Employee Records</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">35</span>
+                <span class="stat-label">Attributes</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">16.1%</span>
+                <span class="stat-label">Attrition Rate</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number">0</span>
+                <span class="stat-label">Missing Values</span>
+              </div>
+            </div>
+            <p class="dataset-description">
+              The dataset includes comprehensive employee information covering
+              demographics, job details, compensation, satisfaction metrics, and
+              performance indicators. It's used to identify patterns and
+              predictors of employee attrition.
+            </p>
+          </div>
+        </div>
+
+        <!-- Key Findings -->
+        <div class="about-section">
+          <div class="about-header">
+            <h3>🔍 Key Findings</h3>
+          </div>
+          <div class="findings-grid">
+            <div class="finding-card">
+              <div class="finding-number">1</div>
+              <h4>Overtime Effect</h4>
+              <p>
+                Employees working overtime have
+                <strong>3× higher attrition rate</strong> (30.5%) compared to
+                those without overtime (10.4%)
+              </p>
+            </div>
+            <div class="finding-card">
+              <div class="finding-number">2</div>
+              <h4>Age Correlation</h4>
+              <p>
+                Young employees aged 18-25 show highest attrition at
+                <strong>~35%</strong>, decreasing with age to 8% for 55+ group
+              </p>
+            </div>
+            <div class="finding-card">
+              <div class="finding-number">3</div>
+              <h4>Department Impact</h4>
+              <p>
+                R&D department has the highest number of departures with <strong>133 employees (56%)</strong>,
+                followed by Sales with 92 (39%) and HR with 12 (5%)
+              </p>
+            </div>
+            <div class="finding-card">
+              <div class="finding-number">4</div>
+              <h4>Travel Frequency</h4>
+              <p>
+                Frequent business travelers face
+                <strong>24.9% attrition risk</strong>, significantly higher than
+                non-travelers (8%)
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- GitHub & Resources -->
+        <div class="about-section">
+          <div class="about-header">
+            <h3>🔗 Resources & Links</h3>
+          </div>
+          <div class="resources-grid">
+            <a
+              href="https://github.com/Yevheniia-Rudenko/ELO-2---HR-Analytics"
+              target="_blank"
+              class="resource-card"
+            >
+              <span class="resource-icon">📁</span>
+              <h4>GitHub Repository</h4>
+              <p>
+                Complete project source code, documentation, and analysis
+                notebooks
+              </p>
+            </a>
+            <a
+              href="https://lookerstudio.google.com/reporting/d2337cc9-accc-4737-b5c1-33b6ccfaad69"
+              target="_blank"
+              class="resource-card"
+            >
+              <span class="resource-icon">📊</span>
+              <h4>Looker Studio Dashboard</h4>
+              <p>Interactive dashboard with real-time data from BigQuery</p>
+            </a>
+            <div class="resource-card">
+              <span class="resource-icon">🎓</span>
+              <h4>MIT Emerging Talent</h4>
+              <p>Part of the ELO-2 module curriculum</p>
+            </div>
+            <div class="resource-card">
+              <span class="resource-icon">📚</span>
+              <h4>Documentation</h4>
+              <p>Complete technical documentation and project guides</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="about-section contact-section">
+          <h3>📧 Get in Touch</h3>
+          <p>
+            Interested in learning more about this project or collaborating?
+            Feel free to reach out through GitHub or check our project
+            repository for detailed documentation.
+          </p>
+          <a
+            href="https://github.com/Yevheniia-Rudenko/ELO-2---HR-Analytics"
+            target="_blank"
+            class="btn btn-primary"
+            >View on GitHub</a
+          >
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>
+          &copy; 2025 HR Analytics System | MIT Emerging Talent - ELO-2 Project
+        </p>
+        <p>Team: Yevheniia Rudenko, Oleksandr Maksymikhin, Majd ABUALSOUD</p>
+      </div>
+    </footer>
+
+    <!-- Load Chart.js first -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- GCP BigQuery integration - Commented out due to placeholder values -->
+    <!-- <script src="js/gcp-integration.js"></script> -->
+    <script src="js/app.js"></script>
+</body>
+</html>
