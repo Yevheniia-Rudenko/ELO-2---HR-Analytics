@@ -12,7 +12,10 @@ from datetime import datetime
 from collections import defaultdict
 
 app = Flask(__name__)
-CORS(app)
+
+# Configure CORS for production
+allowed_origins = os.environ.get('CORS_ORIGINS', '*').split(',')
+CORS(app, origins=allowed_origins)
 
 # Data files
 QUESTIONNAIRE_FILE = 'data/questionnaires.json'
@@ -204,12 +207,16 @@ def health_check():
     })
 
 if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5001))
+    debug = os.environ.get('FLASK_DEBUG', 'True') == 'True'
+    
     print("=" * 60)
     print("🚀 HR Analytics API Server Starting...")
     print("=" * 60)
     print(f"📊 Questionnaires file: {QUESTIONNAIRE_FILE}")
     print(f"⭐ Appraisals file: {APPRAISAL_FILE}")
-    print(f"🌐 Server running on: http://localhost:5001")
+    print(f"🌐 Server running on: http://localhost:{port}")
+    print(f"🔒 CORS Origins: {allowed_origins}")
     print("=" * 60)
     print("\nEndpoints:")
     print("  POST /api/questionnaire - Save questionnaire")
@@ -221,4 +228,4 @@ if __name__ == '__main__':
     print("=" * 60)
     print("\nPress Ctrl+C to stop\n")
     
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=debug)
