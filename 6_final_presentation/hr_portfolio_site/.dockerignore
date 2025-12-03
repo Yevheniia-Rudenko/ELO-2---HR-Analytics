@@ -1,0 +1,43 @@
+# Git
+.git
+.gitignore
+.github
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info
+dist
+build
+.venv
+venv
+env
+
+# Documentation
+*.md
+!README.md
+docs/
+
+# Development
+.env
+.env.local
+*.log
+.DS_Store
+.vscode
+.idea
+
+# Test files
+test_*.py
+*_test.py
+tests/
+
+# Unnecessary for production
+how-it-works.html
+test-data-flow.html
+USER_GUIDE_OLD.md
+BIGQUERY_TESTING.md

@@ -14,7 +14,9 @@ The infrastructure follows cloud-native best practices and provides a scalable f
 
 All cloud resources are isolated within a dedicated GCP project:
 
-- **Project ID:** `employee-attrition-analysis`
+- **Project ID:** `your-gcp-project-id`
+- **Project Number:** `123456789012`
+- **Project Name:** `employee-attrition-analysis`
 
 This project serves as the central workspace for all analytics activities, providing:
 
@@ -38,7 +40,7 @@ This dataset acts as a logical container for all HR-related tables, enabling eff
 The primary analytical table contains the IBM HR Employee Attrition dataset:
 
 - **Table Name:** `employee_attrition`
-- **Full Reference:** `employee-attrition-analysis.IBMAnalytics.employee_attrition`
+- **Full Reference:** `YOUR_GCP_PROJECT_ID.IBMAnalytics.employee_attrition`
 - **Records:** 1,470 employees
 - **Attributes:** 35 columns
 
