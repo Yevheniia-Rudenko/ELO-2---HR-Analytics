@@ -21,20 +21,12 @@ function getAPIConfig() {
         };
     }
     
-    // TEMPORARY: Disable API on GitHub Pages until Cloud Run is deployed
-    // TODO: Re-enable after successful Cloud Run deployment
+    // GitHub Pages - use Cloud Run API
     return {
-        apiUrl: '',
-        useAPI: false,
-        environment: 'static'
+        apiUrl: CLOUD_RUN_API_URL,
+        useAPI: true,
+        environment: 'production'
     };
-    
-    // GitHub Pages or any other domain - use Cloud Run API (UNCOMMENT AFTER DEPLOYMENT)
-    // return {
-    //     apiUrl: CLOUD_RUN_API_URL,
-    //     useAPI: true,
-    //     environment: 'production'
-    // };
 }
 
 // Export configuration
