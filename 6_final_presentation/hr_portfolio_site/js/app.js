@@ -347,7 +347,10 @@ function setupFormHandlers() {
             // Get form data
             const formData = {
                 employeeId: document.getElementById('appraisalEmployeeId').value,
-                jobInvolvement: document.getElementById('jobInvolvement').value
+                jobInvolvement: document.getElementById('jobInvolvement').value,
+                performanceRating: document.getElementById('performanceRating').value,
+                managerComments: document.getElementById('managerComments').value || '',
+                submissionDate: new Date().toISOString()
             };
             
             // Log to console
