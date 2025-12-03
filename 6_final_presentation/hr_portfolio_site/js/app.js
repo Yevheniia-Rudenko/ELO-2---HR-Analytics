@@ -2,15 +2,42 @@
 // HR Analytics System - JavaScript
 // ==========================================
 
-// Configuration
-// API Server Configuration
-// For GitHub Pages (static): API disabled
-// For local development: use http://localhost:8080/api
-const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-    ? 'http://localhost:8080/api' 
-    : ''; // No API on GitHub Pages
-const USE_API_BACKEND = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const USE_GCP_INTEGRATION = false;
+// Note: API configuration is now in config.js
+// This file is loaded before app.js in index.html
+
+const USE_GCP_INTEGRATION = false; // Legacy flag, not used
+
+// ==========================================
+// LocalStorage Functions (for GitHub Pages)
+// ==========================================
+function saveQuestionnaireToLocal(data) {
+    const questionnaires = JSON.parse(localStorage.getItem('hr_questionnaires') || '[]');
+    questionnaires.push(data);
+    localStorage.setItem('hr_questionnaires', JSON.stringify(questionnaires));
+    console.log('✅ Questionnaire saved to localStorage:', data);
+}
+
+function saveAppraisalToLocal(data) {
+    const appraisals = JSON.parse(localStorage.getItem('hr_appraisals') || '[]');
+    appraisals.push(data);
+    localStorage.setItem('hr_appraisals', JSON.stringify(appraisals));
+    console.log('✅ Appraisal saved to localStorage:', data);
+}
+
+function getLocalData() {
+    return {
+        questionnaires: JSON.parse(localStorage.getItem('hr_questionnaires') || '[]'),
+        appraisals: JSON.parse(localStorage.getItem('hr_appraisals') || '[]')
+    };
+}
+
+function showSuccessMessage(formType) {
+    const successId = formType === 'questionnaire' ? 'questionnaireSuccess' : 'appraisalSuccess';
+    const formId = formType === 'questionnaire' ? 'employeeQuestionnaire' : 'managerAppraisal';
+    
+    document.getElementById(successId).style.display = 'block';
+    document.getElementById(formId).style.display = 'none';
+}
 
 // Wait for Chart.js to load
 function waitForChart() {
@@ -260,7 +287,10 @@ function setupFormHandlers() {
             // Log to console
             console.log('Employee Questionnaire Submitted:', formData);
 
-            // Send to backend API
+            // Save to localStorage (works on GitHub Pages)
+            saveQuestionnaireToLocal(formData);
+            
+            // Send to backend API (only on localhost)
             if (USE_API_BACKEND) {
                 fetch(`${API_URL}/questionnaire`, {
                     method: 'POST',
@@ -274,14 +304,8 @@ function setupFormHandlers() {
                 .then(data => {
                     if (data.success) {
                         console.log('✅ Questionnaire saved to database:', data);
-                        // Show success message
-                        document.getElementById('questionnaireSuccess').style.display = 'block';
-                        questionnaireForm.style.display = 'none';
-                        
-                        // Update dashboard with new data
-                        setTimeout(() => {
-                            updateDashboardStats();
-                        }, 500);
+                        showSuccessMessage('questionnaire');
+                        updateLiveInsightsCharts();
                     } else {
                         console.error('❌ Error saving questionnaire:', data.error);
                         alert('Error saving questionnaire. Please try again.');
@@ -290,14 +314,12 @@ function setupFormHandlers() {
                 .catch(error => {
                     console.error('❌ Network error:', error);
                     console.log('⚠️ Make sure API server is running: python3 simple_api.py');
-                    // Still show success in demo mode
-                    document.getElementById('questionnaireSuccess').style.display = 'block';
-                    questionnaireForm.style.display = 'none';
+                    showSuccessMessage('questionnaire');
                 });
             } else {
-                // Demo mode - just show success
-                document.getElementById('questionnaireSuccess').style.display = 'block';
-                questionnaireForm.style.display = 'none';
+                // Static mode (GitHub Pages) - show success
+                showSuccessMessage('questionnaire');
+                updateLiveInsightsCharts();
             }
 
             // Optional GCP Integration
@@ -322,7 +344,10 @@ function setupFormHandlers() {
             // Log to console
             console.log('Manager Appraisal Submitted:', formData);
 
-            // Send to backend API
+            // Save to localStorage (works on GitHub Pages)
+            saveAppraisalToLocal(formData);
+            
+            // Send to backend API (only on localhost)
             if (USE_API_BACKEND) {
                 fetch(`${API_URL}/appraisal`, {
                     method: 'POST',
@@ -336,22 +361,9 @@ function setupFormHandlers() {
                 .then(data => {
                     if (data.success) {
                         console.log('✅ Appraisal saved to database:', data);
-                        // Show success message
-                        document.getElementById('appraisalSuccess').style.display = 'block';
-                        document.getElementById('appraisalFormSection').style.display = 'none';
-                        
-                        // Update employee card status
+                        showSuccessMessage('appraisal');
                         updateEmployeeStatus(formData.employeeId);
-                        
-                        // Update dashboard with new data
-                        setTimeout(() => {
-                            updateDashboardStats();
-                        }, 500);
-                        
-                        // Auto-hide success message
-                        setTimeout(() => {
-                            document.getElementById('appraisalSuccess').style.display = 'none';
-                        }, 5000);
+                        updateLiveInsightsCharts();
                     } else {
                         console.error('❌ Error saving appraisal:', data.error);
                         alert('Error saving appraisal. Please try again.');
@@ -360,7 +372,7 @@ function setupFormHandlers() {
                 .catch(error => {
                     console.error('❌ Network error:', error);
                     console.log('⚠️ Make sure API server is running: python3 simple_api.py');
-                    // Still show success in demo mode
+                    showSuccessMessage('appraisal');
                     document.getElementById('appraisalSuccess').style.display = 'block';
                     document.getElementById('appraisalFormSection').style.display = 'none';
                     updateEmployeeStatus(formData.employeeId);
@@ -522,6 +534,13 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             updateDashboardStats();
         }, 1000);
+    } else {
+        // Load from localStorage if API is disabled
+        console.log('📦 Loading initial data from localStorage...');
+        setTimeout(() => {
+            updateLiveInsightsCharts();
+            updateRecentSubmissionsFromLocal();
+        }, 500);
     }
 });
 
@@ -623,6 +642,45 @@ async function checkAPIStatus() {
     }
 }
 
+// Update Live Insights Charts from localStorage
+function updateLiveInsightsCharts() {
+    const localData = getLocalData();
+    const questionnaires = localData.questionnaires;
+    
+    if (questionnaires.length === 0) {
+        console.log('ℹ️ No questionnaire data yet. Submit a survey to see live insights!');
+        return;
+    }
+    
+    // Calculate statistics
+    const stats = {
+        total_responses: questionnaires.length,
+        avg_environment: questionnaires.reduce((sum, q) => sum + parseInt(q.environmentSatisfaction), 0) / questionnaires.length,
+        avg_job: questionnaires.reduce((sum, q) => sum + parseInt(q.jobSatisfaction), 0) / questionnaires.length,
+        avg_relationship: questionnaires.reduce((sum, q) => sum + parseInt(q.relationshipSatisfaction), 0) / questionnaires.length,
+        avg_work_life_balance: questionnaires.reduce((sum, q) => sum + parseInt(q.workLifeBalance), 0) / questionnaires.length
+    };
+    
+    stats.avg_overall = (stats.avg_environment + stats.avg_job + stats.avg_relationship + stats.avg_work_life_balance) / 4;
+    
+    // Update KPI cards
+    document.getElementById('totalResponses').textContent = stats.total_responses;
+    document.getElementById('avgSatisfaction').textContent = stats.avg_overall.toFixed(1);
+    
+    // Update charts
+    if (liveSatisfactionChart) {
+        liveSatisfactionChart.data.datasets[0].data = [
+            stats.avg_environment,
+            stats.avg_job,
+            stats.avg_relationship,
+            stats.avg_work_life_balance
+        ];
+        liveSatisfactionChart.update();
+    }
+    
+    console.log('✅ Live insights updated from localStorage:', stats);
+}
+
 // Initialize Live Charts
 function initializeLiveCharts() {
     const satChartCanvas = document.getElementById('liveSatisfactionChart');
@@ -713,6 +771,15 @@ function initializeLiveCharts() {
 // Refresh Live Insights
 async function refreshLiveInsights() {
     console.log('🔄 Refreshing Live Insights...');
+    
+    // If API backend is disabled, use localStorage
+    if (!USE_API_BACKEND) {
+        console.log('📦 Loading data from localStorage...');
+        updateLiveInsightsCharts();
+        updateRecentSubmissionsFromLocal();
+        console.log('✅ Live Insights refreshed from localStorage');
+        return;
+    }
     
     try {
         // Fetch satisfaction stats
@@ -857,13 +924,64 @@ function updateRecentSubmissions(data) {
     }
 }
 
+// Update Recent Submissions from localStorage
+function updateRecentSubmissionsFromLocal() {
+    const localData = getLocalData();
+    const listContainer = document.getElementById('recentSubmissionsList');
+    if (!listContainer) return;
+    
+    const allSubmissions = [
+        ...localData.questionnaires.map((q, idx) => ({
+            type: 'Survey',
+            id: idx + 1,
+            employeeId: q.employeeId,
+            timestamp: q.submissionDate,
+            badge: 'Survey'
+        })),
+        ...localData.appraisals.map((a, idx) => ({
+            type: 'Appraisal',
+            id: idx + 1,
+            employeeId: a.employeeId,
+            timestamp: a.appraisalDate,
+            badge: 'Review'
+        }))
+    ];
+    
+    // Sort by timestamp (most recent first)
+    allSubmissions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    
+    // Take top 10
+    const recent = allSubmissions.slice(0, 10);
+    
+    if (recent.length === 0) {
+        listContainer.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">No submissions yet. Fill out a survey to see data here!</p>';
+    } else {
+        listContainer.innerHTML = recent.map(item => `
+            <div class="recent-item animate-fade-in">
+                <div class="recent-item-info">
+                    <div class="recent-item-title">${item.type} - ${item.employeeId}</div>
+                    <div class="recent-item-meta">ID: ${item.id} • ${new Date(item.timestamp).toLocaleString()}</div>
+                </div>
+                <span class="recent-item-badge">${item.badge}</span>
+            </div>
+        `).join('');
+    }
+}
+
 // Export Functions
 async function exportDataAsJSON() {
     try {
-        const response = await fetch(`${API_URL}/all-data`);
-        const data = await response.json();
+        let data;
         
-        const blob = new Blob([JSON.stringify(data.data, null, 2)], { type: 'application/json' });
+        if (USE_API_BACKEND) {
+            const response = await fetch(`${API_URL}/all-data`);
+            const apiData = await response.json();
+            data = apiData.data;
+        } else {
+            data = getLocalData();
+        }
+        
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -879,13 +997,20 @@ async function exportDataAsJSON() {
 
 async function exportDataAsCSV() {
     try {
-        const response = await fetch(`${API_URL}/all-data`);
-        const data = await response.json();
+        let data;
+        
+        if (USE_API_BACKEND) {
+            const response = await fetch(`${API_URL}/all-data`);
+            const apiData = await response.json();
+            data = apiData.data;
+        } else {
+            data = getLocalData();
+        }
         
         // Convert questionnaires to CSV
         let csv = 'Type,Employee ID,Timestamp,Environment,Job,Relationship,Work-Life Balance\n';
         
-        data.data.questionnaires.forEach(q => {
+        data.questionnaires.forEach(q => {
             csv += `Survey,${q.employeeId},${q.saved_at || q.submissionDate},${q.environmentSatisfaction},${q.jobSatisfaction},${q.relationshipSatisfaction},${q.workLifeBalance}\n`;
         });
         
@@ -905,8 +1030,15 @@ async function exportDataAsCSV() {
 
 async function viewAllData() {
     try {
-        const response = await fetch(`${API_URL}/all-data`);
-        const data = await response.json();
+        let data;
+        
+        if (USE_API_BACKEND) {
+            const response = await fetch(`${API_URL}/all-data`);
+            const apiData = await response.json();
+            data = apiData.data;
+        } else {
+            data = getLocalData();
+        }
         
         const win = window.open('', '_blank');
         win.document.write(`
@@ -920,7 +1052,7 @@ async function viewAllData() {
             </head>
             <body>
                 <h1>📊 All HR Analytics Data</h1>
-                <pre>${JSON.stringify(data.data, null, 2)}</pre>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
             </body>
             </html>
         `);
