@@ -4,7 +4,7 @@
 
 // Configuration
 // API Server Configuration
-const API_URL = 'http://localhost:5001/api';
+const API_URL = 'http://localhost:8080/api';
 const USE_API_BACKEND = true; // Set to true to save data to backend
 const USE_GCP_INTEGRATION = false;
 
