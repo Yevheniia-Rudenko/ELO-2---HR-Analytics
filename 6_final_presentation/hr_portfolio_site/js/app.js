@@ -602,8 +602,8 @@ function animateValue(element, start, end, duration) {
 
 // Trigger animations on page load
 window.addEventListener('load', function() {
-    // Animate KPI values
-    const kpiValues = document.querySelectorAll('.kpi-value');
+    // Animate KPI values only on Insights tab, not on Overview (which shows static historical data)
+    const kpiValues = document.querySelectorAll('#data-insights .kpi-value');
     kpiValues.forEach(el => {
         const targetValue = parseFloat(el.textContent);
         if (!isNaN(targetValue)) {
