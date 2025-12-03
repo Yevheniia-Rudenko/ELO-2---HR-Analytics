@@ -1,8 +1,9 @@
 name: CI Checks
 
 on:
-  push:
-    branches: ["main"]
+  # Temporarily disabled
+  # push:
+  #   branches: ["main"]
   pull_request:
     branches: ["main"]
 

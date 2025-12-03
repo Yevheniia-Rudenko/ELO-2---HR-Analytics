@@ -4,8 +4,12 @@
 
 // Configuration
 // API Server Configuration
-const API_URL = 'http://localhost:8080/api';
-const USE_API_BACKEND = true; // Set to true to save data to backend
+// For GitHub Pages (static): API disabled
+// For local development: use http://localhost:8080/api
+const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+    ? 'http://localhost:8080/api' 
+    : ''; // No API on GitHub Pages
+const USE_API_BACKEND = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 const USE_GCP_INTEGRATION = false;
 
 // Wait for Chart.js to load
