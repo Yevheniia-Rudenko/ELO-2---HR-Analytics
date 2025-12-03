@@ -23,11 +23,19 @@ except ImportError:
 
 app = Flask(__name__)
 
-# Configure CORS
-if CORS_ORIGINS == ['*']:
-    CORS(app)
-else:
-    CORS(app, origins=CORS_ORIGINS)
+# Configure CORS - allow GitHub Pages
+CORS(app, resources={
+    r"/api/*": {
+        "origins": [
+            "https://yevheniia-rudenko.github.io",
+            "http://localhost:8888",
+            "http://localhost:5500",
+            "http://127.0.0.1:8888"
+        ],
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 
 # Initialize BigQuery client
 try:
