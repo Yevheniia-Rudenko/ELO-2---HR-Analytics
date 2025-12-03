@@ -916,7 +916,7 @@ async function refreshLiveInsights() {
             // Update trend chart with all historical data
             if (stats.total_responses > 0) {
                 // Fetch all questionnaires to build trend
-                const allDataResponse = await fetch(`${API_URL}/questionnaire:1`);
+                const allDataResponse = await fetch(`${API_URL}/all-data`);
                 const allData = await allDataResponse.json();
                 
                 if (allData.success && allData.data && allData.data.questionnaires) {
