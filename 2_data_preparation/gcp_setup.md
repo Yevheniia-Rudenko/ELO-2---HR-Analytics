@@ -14,8 +14,8 @@ The infrastructure follows cloud-native best practices and provides a scalable f
 
 All cloud resources are isolated within a dedicated GCP project:
 
-- **Project ID:** `core-trees-478718-g0`
-- **Project Number:** `645256012006`
+- **Project ID:** `your-gcp-project-id`
+- **Project Number:** `123456789012`
 - **Project Name:** `employee-attrition-analysis`
 
 This project serves as the central workspace for all analytics activities, providing:
