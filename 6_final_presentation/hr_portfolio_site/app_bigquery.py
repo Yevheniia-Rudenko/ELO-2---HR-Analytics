@@ -10,6 +10,7 @@ from google.cloud import bigquery
 from datetime import datetime
 import os
 import json
+import uuid
 
 # Load configuration
 try:
@@ -50,6 +51,7 @@ except Exception as e:
 SOURCE_TABLE = f'{GCP_PROJECT_ID}.{GCP_DATASET}.{GCP_TABLE}'
 QUESTIONNAIRE_TABLE = f'{GCP_PROJECT_ID}.{GCP_DATASET}.questionnaires'
 APPRAISAL_TABLE = f'{GCP_PROJECT_ID}.{GCP_DATASET}.appraisals'
+EMPLOYEES_TABLE = f'{GCP_PROJECT_ID}.{GCP_DATASET}.employees'
 
 def init_bigquery_client():
     """Initialize BigQuery client if not already done"""
@@ -84,6 +86,17 @@ def ensure_tables_exist():
             bigquery.SchemaField("saved_at", "TIMESTAMP", mode="REQUIRED"),
         ]
         
+        # Employees table schema
+        employees_schema = [
+            bigquery.SchemaField("id", "STRING", mode="REQUIRED"),
+            bigquery.SchemaField("employeeId", "STRING", mode="REQUIRED"),
+            bigquery.SchemaField("name", "STRING", mode="REQUIRED"),
+            bigquery.SchemaField("position", "STRING", mode="REQUIRED"),
+            bigquery.SchemaField("department", "STRING", mode="NULLABLE"),
+            bigquery.SchemaField("dateAdded", "TIMESTAMP", mode="REQUIRED"),
+            bigquery.SchemaField("saved_at", "TIMESTAMP", mode="REQUIRED"),
+        ]
+        
         # Create questionnaires table
         try:
             table_ref = bigquery.TableReference.from_string(QUESTIONNAIRE_TABLE)
@@ -101,6 +114,15 @@ def ensure_tables_exist():
             print(f"✅ Appraisals table ready: {APPRAISAL_TABLE}")
         except Exception as e:
             print(f"ℹ️ Appraisals table: {e}")
+        
+        # Create employees table
+        try:
+            table_ref = bigquery.TableReference.from_string(EMPLOYEES_TABLE)
+            table = bigquery.Table(table_ref, schema=employees_schema)
+            bq_client.create_table(table, exists_ok=True)
+            print(f"✅ Employees table ready: {EMPLOYEES_TABLE}")
+        except Exception as e:
+            print(f"ℹ️ Employees table: {e}")
             
     except Exception as e:
         print(f"⚠️ Error ensuring tables exist: {e}")
@@ -309,6 +331,52 @@ def get_all_data():
         })
         
     except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/employee', methods=['POST'])
+def add_employee():
+    """Add a new employee for appraisal"""
+    try:
+        data = request.get_json()
+        
+        # Validate required fields
+        required_fields = ['employeeId', 'name', 'position']
+        for field in required_fields:
+            if field not in data:
+                return jsonify({'success': False, 'error': f'Missing required field: {field}'}), 400
+        
+        bq_client = init_bigquery_client()
+        
+        # Generate unique ID
+        employee_id = str(uuid.uuid4())
+        
+        # Prepare row for BigQuery
+        row_to_insert = {
+            'id': employee_id,
+            'employeeId': data['employeeId'],
+            'name': data['name'],
+            'position': data['position'],
+            'department': data.get('department', 'General'),
+            'dateAdded': data.get('dateAdded', datetime.now().isoformat()),
+            'saved_at': datetime.now().isoformat()
+        }
+        
+        # Insert into BigQuery
+        errors = bq_client.insert_rows_json(EMPLOYEES_TABLE, [row_to_insert])
+        
+        if errors:
+            print(f"Error inserting employee: {errors}")
+            return jsonify({'success': False, 'error': str(errors)}), 500
+        
+        print(f"✅ Employee added: {data['name']} ({data['employeeId']})")
+        return jsonify({
+            'success': True,
+            'message': 'Employee added successfully',
+            'data': row_to_insert
+        })
+        
+    except Exception as e:
+        print(f"❌ Error adding employee: {e}")
         return jsonify({'success': False, 'error': str(e)}), 500
 
 if __name__ == '__main__':

@@ -438,23 +438,30 @@ function viewAppraisal(employeeId) {
 }
 
 function updateEmployeeStatus(employeeId) {
-    // Find employee card and update status
-    const employeeCards = document.querySelectorAll('.employee-card');
-    employeeCards.forEach(card => {
-        const button = card.querySelector('.btn');
-        if (button && button.getAttribute('onclick').includes(employeeId)) {
-            const statusBadge = card.querySelector('.status');
-            if (statusBadge) {
-                statusBadge.textContent = 'Completed';
-                statusBadge.classList.remove('pending');
-                statusBadge.classList.add('completed');
-            }
+    // Find employee card by data-employee-id attribute
+    const employeeCard = document.querySelector(`.employee-card[data-employee-id="${employeeId}"]`);
+    
+    if (employeeCard) {
+        const statusBadge = employeeCard.querySelector('.status');
+        const button = employeeCard.querySelector('.btn');
+        
+        if (statusBadge) {
+            statusBadge.textContent = 'Completed';
+            statusBadge.classList.remove('pending');
+            statusBadge.classList.add('completed');
+        }
+        
+        if (button) {
             button.textContent = 'View';
             button.classList.remove('btn-primary');
             button.classList.add('btn-view');
             button.setAttribute('onclick', `viewAppraisal('${employeeId}')`);
         }
-    });
+        
+        console.log(`✅ Updated employee status: ${employeeId} -> Completed`);
+    } else {
+        console.warn(`⚠️ Employee card not found for ID: ${employeeId}`);
+    }
 }
 
 // ==========================================
@@ -487,12 +494,20 @@ function addNewEmployee() {
     // Check if employee ID already exists
     const existingCards = document.querySelectorAll('.employee-card');
     for (let card of existingCards) {
-        const button = card.querySelector('.btn');
-        if (button && button.getAttribute('onclick').includes(employeeId)) {
+        if (card.getAttribute('data-employee-id') === employeeId) {
             alert(`Employee ID ${employeeId} already exists!`);
             return;
         }
     }
+
+    // Prepare data for API
+    const employeeData = {
+        employeeId: employeeId,
+        name: name,
+        position: position,
+        department: 'General', // Default department
+        dateAdded: new Date().toISOString()
+    };
 
     // Create new employee card
     const employeeList = document.getElementById('employeeList');
@@ -511,6 +526,30 @@ function addNewEmployee() {
     `;
 
     employeeList.appendChild(newCard);
+
+    // Send to backend API if available
+    if (USE_API_BACKEND) {
+        fetch(`${API_URL}/employee`, {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(employeeData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('✅ Employee saved to database:', data);
+            } else {
+                console.error('❌ Error saving employee:', data.error);
+            }
+        })
+        .catch(error => {
+            console.error('❌ Network error:', error);
+            console.log('⚠️ Employee added locally but not synced to API');
+        });
+    }
 
     // Hide form and show success message
     toggleAddEmployeeForm();
