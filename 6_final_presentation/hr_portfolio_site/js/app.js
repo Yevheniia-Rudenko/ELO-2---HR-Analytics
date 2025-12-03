@@ -5,6 +5,15 @@
 // Note: API configuration is now in config.js
 // This file is loaded before app.js in index.html
 
+// Get API configuration from config.js
+const apiConfig = typeof getAPIConfig === 'function' ? getAPIConfig() : { apiUrl: 'http://localhost:5001/api', useAPI: false };
+const API_URL = apiConfig.apiUrl;
+const USE_API_BACKEND = apiConfig.useAPI;
+
+console.log('🔧 Environment:', apiConfig.environment);
+console.log('📡 API URL:', API_URL);
+console.log(USE_API_BACKEND ? '✅ API Backend: Enabled' : '❌ API Backend: Disabled');
+
 const USE_GCP_INTEGRATION = false; // Legacy flag, not used
 
 // ==========================================
