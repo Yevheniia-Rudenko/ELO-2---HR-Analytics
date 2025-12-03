@@ -53,20 +53,20 @@
 
     <main class="container">
       <!-- Welcome Banner -->
-      <div class="welcome-banner" style="background: var(--gradient-primary); color: white; padding: 30px; border-radius: 12px; margin-top: 30px; margin-bottom: 30px; box-shadow: var(--shadow-xl);">
-        <h2 style="margin: 0 0 10px 0; font-size: 28px;">👋 Welcome to HR Analytics System</h2>
-        <p style="margin: 0; font-size: 16px; opacity: 0.95;">
+      <div class="welcome-banner" style="background: var(--gradient-primary); color: white; padding: 40px; border-radius: 16px; margin-top: 30px; margin-bottom: 30px; box-shadow: var(--shadow-xl); text-align: center;">
+        <h2 style="margin: 0 0 15px 0; font-size: 32px; font-weight: 700;">👋 Welcome to HR Analytics System</h2>
+        <p style="margin: 0 auto; font-size: 18px; opacity: 0.95; max-width: 900px; line-height: 1.6;">
           Your comprehensive platform for employee data analysis, satisfaction surveys, and performance management. 
           Navigate through tabs to explore analytics, submit surveys, conduct appraisals, and view real-time insights.
         </p>
-        <div style="margin-top: 20px; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
-          <a href="#questionary" class="quick-action-btn" onclick="document.querySelector('[data-tab=questionary]').click()">
+        <div style="margin-top: 30px; display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+          <a href="#questionary" class="quick-action-btn" onclick="document.querySelector('[data-tab=questionary]').click()" style="padding: 12px 24px; font-size: 16px; font-weight: 600;">
             📝 Take Survey
           </a>
-          <a href="#data-insights" class="quick-action-btn" onclick="document.querySelector('[data-tab=data-insights]').click()">
+          <a href="#data-insights" class="quick-action-btn" onclick="document.querySelector('[data-tab=data-insights]').click()" style="padding: 12px 24px; font-size: 16px; font-weight: 600;">
             📈 View Live Data
           </a>
-          <a href="how-it-works.html" class="quick-action-btn">
+          <a href="how-it-works.html" class="quick-action-btn" style="padding: 12px 24px; font-size: 16px; font-weight: 600;">
             📚 Learn More
           </a>
         </div>
@@ -74,11 +74,11 @@
 
       <!-- Overview Tab -->
       <section id="overview" class="tab-content active">
-        <div class="page-header">
-          <h2>📊 HR Analytics Dashboard</h2>
-          <p class="page-description">Real-time insights into workforce metrics, attrition patterns, and employee satisfaction. Use these analytics to identify trends, predict risks, and make data-driven HR decisions.</p>
-          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 20px; border-radius: 8px; margin-top: 15px;">
-            <strong>📚 Data Source:</strong> Historical Analysis - Based on IBM HR Analytics Dataset (1,470 employees, 2015-2016 period)
+        <div class="page-header" style="text-align: center; margin-bottom: 30px;">
+          <h2 style="font-size: 36px; margin-bottom: 10px;">📊 HR Analytics Dashboard</h2>
+          <p class="page-description" style="font-size: 18px; color: #64748b; max-width: 900px; margin: 0 auto 20px;">Real-time insights into workforce metrics, attrition patterns, and employee satisfaction. Use these analytics to identify trends, predict risks, and make data-driven HR decisions.</p>
+          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 30px; border-radius: 12px; margin-top: 20px; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);">
+            <strong style="font-size: 16px;">📚 Data Source:</strong> <span style="font-size: 15px;">Historical Analysis - Based on IBM HR Analytics Dataset (1,470 employees, 2015-2016 period)</span>
           </div>
         </div>
 
