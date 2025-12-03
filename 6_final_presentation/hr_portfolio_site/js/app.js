@@ -913,19 +913,37 @@ async function refreshLiveInsights() {
                     `Highest: ${highestCat} (${highest.toFixed(1)}), Lowest: ${lowestCat} (${lowest.toFixed(1)})`;
             }
             
-            // Add to trend history
-            if (stats.total_responses > 0 && (trendDataHistory.length === 0 || 
-                trendDataHistory[trendDataHistory.length - 1] !== stats.avg_overall)) {
-                trendDataHistory.push(stats.avg_overall);
+            // Update trend chart with all historical data
+            if (stats.total_responses > 0) {
+                // Fetch all questionnaires to build trend
+                const allDataResponse = await fetch(`${API_URL}/questionnaire:1`);
+                const allData = await allDataResponse.json();
                 
-                if (satisfactionTrendChart) {
-                    satisfactionTrendChart.data.labels = trendDataHistory.map((_, i) => `#${i + 1}`);
-                    satisfactionTrendChart.data.datasets[0].data = trendDataHistory;
-                    satisfactionTrendChart.update();
+                if (allData.success && allData.data && allData.data.questionnaires) {
+                    const questionnaires = allData.data.questionnaires;
+                    
+                    // Calculate average satisfaction for each submission
+                    const trendPoints = questionnaires.map((q, index) => {
+                        const avg = (
+                            parseInt(q.environmentSatisfaction || 0) +
+                            parseInt(q.jobSatisfaction || 0) +
+                            parseInt(q.relationshipSatisfaction || 0) +
+                            parseInt(q.workLifeBalance || 0)
+                        ) / 4;
+                        return avg;
+                    });
+                    
+                    if (satisfactionTrendChart && trendPoints.length > 0) {
+                        satisfactionTrendChart.data.labels = trendPoints.map((_, i) => `#${i + 1}`);
+                        satisfactionTrendChart.data.datasets[0].data = trendPoints;
+                        satisfactionTrendChart.update();
+                        
+                        document.getElementById('trendDataPoints').textContent = 
+                            `${trendPoints.length} data points tracked`;
+                        
+                        console.log(`📈 Trend updated with ${trendPoints.length} data points`);
+                    }
                 }
-                
-                document.getElementById('trendDataPoints').textContent = 
-                    `${trendDataHistory.length} data points tracked`;
             }
         }
         
