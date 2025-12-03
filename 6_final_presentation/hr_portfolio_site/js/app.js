@@ -33,10 +33,29 @@ function saveAppraisalToLocal(data) {
     console.log('✅ Appraisal saved to localStorage:', data);
 }
 
+function saveEmployeeToLocal(employeeData) {
+    const employees = JSON.parse(localStorage.getItem('hr_employees') || '[]');
+    employees.push(employeeData);
+    localStorage.setItem('hr_employees', JSON.stringify(employees));
+    console.log('✅ Employee saved to localStorage:', employeeData);
+}
+
+function updateEmployeeStatusInLocal(employeeId, status) {
+    const employees = JSON.parse(localStorage.getItem('hr_employees') || '[]');
+    const employee = employees.find(e => e.employeeId === employeeId);
+    if (employee) {
+        employee.status = status;
+        employee.lastUpdated = new Date().toISOString();
+        localStorage.setItem('hr_employees', JSON.stringify(employees));
+        console.log('✅ Employee status updated in localStorage:', employeeId, status);
+    }
+}
+
 function getLocalData() {
     return {
         questionnaires: JSON.parse(localStorage.getItem('hr_questionnaires') || '[]'),
-        appraisals: JSON.parse(localStorage.getItem('hr_appraisals') || '[]')
+        appraisals: JSON.parse(localStorage.getItem('hr_appraisals') || '[]'),
+        employees: JSON.parse(localStorage.getItem('hr_employees') || '[]')
     };
 }
 
@@ -90,6 +109,9 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     // Initialize charts
     initializeCharts();
+
+    // Load employees from localStorage
+    loadEmployeesFromLocal();
 
     // Load data from GCP if enabled
     if (USE_GCP_INTEGRATION && typeof loadDashboardDataFromBigQuery === 'function') {
@@ -458,6 +480,9 @@ function updateEmployeeStatus(employeeId) {
             button.setAttribute('onclick', `viewAppraisal('${employeeId}')`);
         }
         
+        // Update status in localStorage
+        updateEmployeeStatusInLocal(employeeId, 'completed');
+        
         console.log(`✅ Updated employee status: ${employeeId} -> Completed`);
     } else {
         console.warn(`⚠️ Employee card not found for ID: ${employeeId}`);
@@ -478,6 +503,54 @@ function toggleAddEmployeeForm() {
     } else {
         form.style.display = 'none';
     }
+}
+
+function loadEmployeesFromLocal() {
+    const localData = getLocalData();
+    const employees = localData.employees || [];
+    const appraisals = localData.appraisals || [];
+    
+    const employeeList = document.getElementById('employeeList');
+    if (!employeeList) return;
+    
+    // Clear existing custom employees (keep default ones if needed)
+    const customEmployees = employeeList.querySelectorAll('.employee-card[data-custom="true"]');
+    customEmployees.forEach(card => card.remove());
+    
+    // Load employees from localStorage
+    employees.forEach(emp => {
+        // Check if employee already has appraisal
+        const hasAppraisal = appraisals.some(a => a.employeeId === emp.employeeId);
+        const status = hasAppraisal ? 'completed' : (emp.status || 'pending');
+        
+        const newCard = document.createElement('div');
+        newCard.className = 'employee-card';
+        newCard.setAttribute('data-employee-id', emp.employeeId);
+        newCard.setAttribute('data-custom', 'true');
+        
+        const statusClass = status === 'completed' ? 'completed' : 'pending';
+        const statusText = status === 'completed' ? 'Completed' : 'Appraisal Pending';
+        const buttonClass = status === 'completed' ? 'btn-view' : 'btn-primary';
+        const buttonText = status === 'completed' ? 'View' : 'Evaluate';
+        const buttonAction = status === 'completed' ? 
+            `viewAppraisal('${emp.employeeId}')` : 
+            `openAppraisalForm('${emp.employeeId}', '${emp.name}')`;
+        
+        newCard.innerHTML = `
+            <div class="employee-info">
+                <h4>${emp.name}</h4>
+                <p>${emp.position} | ID: ${emp.employeeId}</p>
+                <span class="status ${statusClass}">${statusText}</span>
+            </div>
+            <button class="btn btn-small ${buttonClass}" onclick="${buttonAction}">
+                ${buttonText}
+            </button>
+        `;
+        
+        employeeList.appendChild(newCard);
+    });
+    
+    console.log(`✅ Loaded ${employees.length} employees from localStorage`);
 }
 
 function addNewEmployee() {
@@ -506,8 +579,12 @@ function addNewEmployee() {
         name: name,
         position: position,
         department: 'General', // Default department
+        status: 'pending', // Initial status
         dateAdded: new Date().toISOString()
     };
+
+    // Save to localStorage
+    saveEmployeeToLocal(employeeData);
 
     // Create new employee card
     const employeeList = document.getElementById('employeeList');
@@ -520,7 +597,7 @@ function addNewEmployee() {
             <p>${position} | ID: ${employeeId}</p>
             <span class="status pending">Appraisal Pending</span>
         </div>
-        <button class="btn btn-small" onclick="openAppraisalForm('${employeeId}', '${name}')">
+        <button class="btn btn-small btn-primary" onclick="openAppraisalForm('${employeeId}', '${name}')">
             Evaluate
         </button>
     `;
