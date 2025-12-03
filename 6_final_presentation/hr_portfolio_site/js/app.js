@@ -595,8 +595,15 @@ let trendDataHistory = [];
 async function checkAPIStatus() {
     const indicator = document.getElementById('apiStatusIndicator');
     const statusText = document.getElementById('apiStatusText');
+    const apiStatus = document.querySelector('.api-status');
     
     if (!indicator || !statusText) return;
+    
+    // Hide API status on GitHub Pages (production)
+    if (!USE_API_BACKEND) {
+        if (apiStatus) apiStatus.style.display = 'none';
+        return;
+    }
     
     indicator.className = 'status-dot checking';
     statusText.textContent = 'Checking API...';
