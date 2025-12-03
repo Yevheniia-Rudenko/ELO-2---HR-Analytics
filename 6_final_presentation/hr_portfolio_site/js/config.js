@@ -29,11 +29,5 @@ function getAPIConfig() {
     };
 }
 
-// Export configuration
-const API_CONFIG = getAPIConfig();
-const API_URL = API_CONFIG.apiUrl;
-const USE_API_BACKEND = API_CONFIG.useAPI;
-
-console.log(`🔧 Environment: ${API_CONFIG.environment}`);
-console.log(`🌐 API URL: ${API_URL}`);
-console.log(`✅ API Backend: ${USE_API_BACKEND ? 'Enabled' : 'Disabled'}`);
+// Note: API_URL and USE_API_BACKEND are initialized in app.js
+// This file only provides the getAPIConfig() function
