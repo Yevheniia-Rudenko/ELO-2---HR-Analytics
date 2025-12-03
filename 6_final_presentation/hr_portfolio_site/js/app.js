@@ -458,6 +458,73 @@ function updateEmployeeStatus(employeeId) {
 }
 
 // ==========================================
+// Add Employee Functions
+// ==========================================
+function toggleAddEmployeeForm() {
+    const form = document.getElementById('addEmployeeForm');
+    if (form.style.display === 'none') {
+        form.style.display = 'block';
+        // Clear form
+        document.getElementById('newEmployeeName').value = '';
+        document.getElementById('newEmployeeId').value = '';
+        document.getElementById('newEmployeePosition').value = '';
+    } else {
+        form.style.display = 'none';
+    }
+}
+
+function addNewEmployee() {
+    const name = document.getElementById('newEmployeeName').value.trim();
+    const employeeId = document.getElementById('newEmployeeId').value.trim();
+    const position = document.getElementById('newEmployeePosition').value.trim();
+
+    // Validation
+    if (!name || !employeeId || !position) {
+        alert('Please fill in all fields');
+        return;
+    }
+
+    // Check if employee ID already exists
+    const existingCards = document.querySelectorAll('.employee-card');
+    for (let card of existingCards) {
+        const button = card.querySelector('.btn');
+        if (button && button.getAttribute('onclick').includes(employeeId)) {
+            alert(`Employee ID ${employeeId} already exists!`);
+            return;
+        }
+    }
+
+    // Create new employee card
+    const employeeList = document.getElementById('employeeList');
+    const newCard = document.createElement('div');
+    newCard.className = 'employee-card';
+    newCard.setAttribute('data-employee-id', employeeId);
+    newCard.innerHTML = `
+        <div class="employee-info">
+            <h4>${name}</h4>
+            <p>${position} | ID: ${employeeId}</p>
+            <span class="status pending">Appraisal Pending</span>
+        </div>
+        <button class="btn btn-small" onclick="openAppraisalForm('${employeeId}', '${name}')">
+            Evaluate
+        </button>
+    `;
+
+    employeeList.appendChild(newCard);
+
+    // Hide form and show success message
+    toggleAddEmployeeForm();
+    
+    // Scroll to new employee
+    newCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    
+    // Highlight new card briefly
+    newCard.style.animation = 'pulse 0.5s ease';
+    
+    console.log(`✅ Added new employee: ${name} (${employeeId})`);
+}
+
+// ==========================================
 // Dashboard Stats Update Functions
 // ==========================================
 function updateDashboardStats() {
