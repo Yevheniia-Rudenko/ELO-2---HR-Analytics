@@ -43,7 +43,6 @@
         </ul>
         <div class="nav-actions">
           <a href="how-it-works.html" class="nav-btn btn-docs">📚 Docs</a>
-          <a href="test-data-flow.html" target="_blank" class="nav-btn btn-test">🧪 Test</a>
           <div class="api-status">
             <span id="apiStatusIndicator" class="status-dot"></span>
             <span id="apiStatusText">API</span>
@@ -67,9 +66,6 @@
           <a href="#data-insights" class="quick-action-btn" onclick="document.querySelector('[data-tab=data-insights]').click()">
             📈 View Live Data
           </a>
-          <a href="test-data-flow.html" target="_blank" class="quick-action-btn">
-            🧪 Test Lab
-          </a>
           <a href="how-it-works.html" class="quick-action-btn">
             📚 Learn More
           </a>
@@ -81,6 +77,9 @@
         <div class="page-header">
           <h2>📊 HR Analytics Dashboard</h2>
           <p class="page-description">Real-time insights into workforce metrics, attrition patterns, and employee satisfaction. Use these analytics to identify trends, predict risks, and make data-driven HR decisions.</p>
+          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 20px; border-radius: 8px; margin-top: 15px;">
+            <strong>📚 Data Source:</strong> Historical Analysis - Based on IBM HR Analytics Dataset (1,470 employees, 2015-2016 period)
+          </div>
         </div>
 
         <!-- KPI Cards -->
@@ -485,6 +484,9 @@
             Real-time statistics and visualizations based on actual submitted survey responses and performance appraisals. 
             Watch as data flows from forms to dashboards in real-time!
           </p>
+          <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 15px 20px; border-radius: 8px; margin-top: 15px;">
+            <strong>🔴 LIVE Data Source:</strong> Real-time collection from Employee Surveys & Manager Appraisals (stored in BigQuery)
+          </div>
         </div>
 
         <div class="info-box" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left-color: var(--success-color);">
