@@ -344,13 +344,12 @@ function setupFormHandlers() {
         appraisalForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Get form data
+            // Get form data - match BigQuery schema
             const formData = {
                 employeeId: document.getElementById('appraisalEmployeeId').value,
-                jobInvolvement: document.getElementById('jobInvolvement').value,
-                performanceRating: document.getElementById('performanceRating').value,
-                managerComments: document.getElementById('managerComments').value || '',
-                submissionDate: new Date().toISOString()
+                performanceRating: parseInt(document.getElementById('performanceRating').value),
+                appraisalDate: new Date().toISOString()
+                // Note: jobInvolvement and managerComments not in BigQuery schema yet
             };
             
             // Log to console
