@@ -492,15 +492,15 @@ function updateDashboardStats() {
 }
 
 function updateSatisfactionKPI(stats) {
-    // Update Average Satisfaction KPI card
-    const kpiValue = document.querySelector('.kpi-card:nth-child(2) .kpi-value');
-    if (kpiValue && stats.avg_overall > 0) {
-        kpiValue.textContent = `${stats.avg_overall}/4`;
+    // Update Average Satisfaction KPI card (only on live insights tab, not static historical data)
+    const liveKpiValue = document.querySelector('#data-insights .kpi-value');
+    if (liveKpiValue && stats.avg_overall > 0) {
+        liveKpiValue.textContent = `${stats.avg_overall}/4`;
         
         // Add animation
-        kpiValue.style.animation = 'none';
+        liveKpiValue.style.animation = 'none';
         setTimeout(() => {
-            kpiValue.style.animation = 'pulse 0.5s ease';
+            liveKpiValue.style.animation = 'pulse 0.5s ease';
         }, 10);
         
         console.log(`📊 Updated Satisfaction KPI: ${stats.avg_overall}/4`);
@@ -508,15 +508,15 @@ function updateSatisfactionKPI(stats) {
 }
 
 function updatePerformanceKPI(stats) {
-    // Update Average Performance KPI card
-    const kpiValue = document.querySelector('.kpi-card:nth-child(4) .kpi-value');
-    if (kpiValue && stats.avg_performance > 0) {
-        kpiValue.textContent = `${stats.avg_performance}/4`;
+    // Update Average Performance KPI card (only on live insights tab)
+    const liveKpiValue = document.querySelector('#data-insights .kpi-card:nth-child(3) .kpi-value');
+    if (liveKpiValue && stats.avg_performance > 0) {
+        liveKpiValue.textContent = `${stats.avg_performance}/4`;
         
         // Add animation
-        kpiValue.style.animation = 'none';
+        liveKpiValue.style.animation = 'none';
         setTimeout(() => {
-            kpiValue.style.animation = 'pulse 0.5s ease';
+            liveKpiValue.style.animation = 'pulse 0.5s ease';
         }, 10);
         
         console.log(`⭐ Updated Performance KPI: ${stats.avg_performance}/4`);
