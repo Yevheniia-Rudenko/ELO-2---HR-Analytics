@@ -537,13 +537,13 @@ function updateSatisfactionChart(stats) {
     }
 }
 
-// Load initial stats on page load
+// Load initial stats on page load - DISABLED for Overview (shows historical static data)
+// Live data is loaded only when user navigates to Insights tab
 document.addEventListener('DOMContentLoaded', function() {
-    if (USE_API_BACKEND) {
-        setTimeout(() => {
-            updateDashboardStats();
-        }, 1000);
-    } else {
+    // Don't auto-load stats on page load to preserve static historical data in Overview
+    console.log('✅ Page loaded - Overview shows historical data, Insights will load on demand');
+    
+    if (!USE_API_BACKEND) {
         // Load from localStorage if API is disabled
         console.log('📦 Loading initial data from localStorage...');
         setTimeout(() => {
