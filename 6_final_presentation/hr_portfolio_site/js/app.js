@@ -95,16 +95,21 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Wait for Chart.js to be ready
     await waitForChart();
-    console.log('📊 Starting chart initialization...');
+    console.log('📊 Chart.js is ready');
     
     // Tab switching functionality
     const tabLinks = document.querySelectorAll('.tab-link');
     const tabContents = document.querySelectorAll('.tab-content');
+    
+    console.log(`🔗 Found ${tabLinks.length} tab links`);
+    console.log(`📄 Found ${tabContents.length} tab contents`);
 
-    tabLinks.forEach(link => {
+    tabLinks.forEach((link, index) => {
+        console.log(`  Tab ${index + 1}: ${link.getAttribute('data-tab')}`);
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const targetTab = this.getAttribute('data-tab');
+            console.log(`🔄 Switching to tab: ${targetTab}`);
 
             // Remove active class from all tabs and links
             tabLinks.forEach(l => l.classList.remove('active'));
@@ -112,10 +117,17 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             // Add active class to clicked link and corresponding content
             this.classList.add('active');
-            document.getElementById(targetTab).classList.add('active');
+            const targetContent = document.getElementById(targetTab);
+            if (targetContent) {
+                targetContent.classList.add('active');
+                console.log(`✅ Activated tab: ${targetTab}`);
+            } else {
+                console.error(`❌ Tab content not found: ${targetTab}`);
+            }
         });
     });
 
+    console.log('📊 Starting chart initialization...');
     // Initialize charts
     initializeCharts();
 
@@ -139,15 +151,18 @@ document.addEventListener('DOMContentLoaded', async function() {
 // ==========================================
 function initializeCharts() {
     console.log('📊 Initializing charts...');
-    console.log('Chart.js available:', typeof Chart !== 'undefined');
-    console.log('Chart version:', typeof Chart !== 'undefined' ? Chart.version : 'N/A');
+    console.log('  Chart.js available:', typeof Chart !== 'undefined');
+    if (typeof Chart !== 'undefined') {
+        console.log('  Chart.js version:', Chart.version);
+    }
     
     // Chart 1: Attrition by Department
     const deptCtx = document.getElementById('attritionDeptChart');
-    console.log('Department chart canvas found:', !!deptCtx);
+    console.log('  🔍 Department chart canvas:', deptCtx ? 'FOUND' : 'NOT FOUND');
     
     if (deptCtx) {
         try {
+            console.log('  📊 Creating department chart...');
             const deptChart = new Chart(deptCtx, {
                 type: 'bar',
                 data: {
@@ -186,20 +201,21 @@ function initializeCharts() {
                     }
                 }
             });
-            console.log('✅ Department chart created successfully');
+            console.log('  ✅ Department chart created successfully');
         } catch (error) {
-            console.error('❌ Error creating department chart:', error);
+            console.error('  ❌ Error creating department chart:', error);
         }
     } else {
-        console.warn('⚠️ Department chart canvas not found!');
+        console.warn('  ⚠️ Department chart canvas element not found');
     }
 
     // Chart 2: Attrition by Age Group
     const ageCtx = document.getElementById('attritionAgeChart');
-    console.log('Age chart canvas found:', !!ageCtx);
+    console.log('  🔍 Age chart canvas:', ageCtx ? 'FOUND' : 'NOT FOUND');
     
     if (ageCtx) {
         try {
+            console.log('  📊 Creating age chart...');
             const ageChart = new Chart(ageCtx, {
             type: 'line',
             data: {
