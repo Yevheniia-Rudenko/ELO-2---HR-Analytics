@@ -11,8 +11,8 @@ namespace backend.API.Models
         public int ManagerId { get; set; }
 
         [Required]
-        [ForeignKey("FK_Employee_Id")]
-        public int EmployeeId { get; set; }
+        [ForeignKey("FK_Subordinate_Id")]
+        public int SubordinateId { get; set; }
 
         [Required]
         public int JobInvolvement { get; set; }
@@ -23,12 +23,8 @@ namespace backend.API.Models
         public DateTime? Date { get; set; }
 
         //navigation properties
-        virtual public User Publisher { get; set; }
-        virtual public User Subscriber { get; set; }
+        virtual public User Manager { get; set; }
+        virtual public User Subordinate { get; set; }
 
-
-
-
-    
     }
 }

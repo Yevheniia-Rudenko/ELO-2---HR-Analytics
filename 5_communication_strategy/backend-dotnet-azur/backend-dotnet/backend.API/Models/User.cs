@@ -17,14 +17,18 @@ namespace backend.API.Models
         public String SecondName { get; set; }
 
         [ForeignKey("FK_UserManager_Id")]
-        public int UserId { get; set; }
+        public int? ManagerId { get; set; }
 
 
         //properties navigation
         public virtual Usercredentials Usercredentials { get; set; }
         public virtual Employee Employee { get; set; }
-        public virtual ICollection<Apraisal>? Apraisals { get; set; }
+        //public virtual ICollection<Apraisal>? Apraisals { get; set; }
+        public virtual ICollection<Apraisal> ApraisalsMade { get; set; }
+        public virtual ICollection<Apraisal> ApraisalsReceived { get; set; }
         public virtual ICollection<Questionary>? Questionaries { get; set; }
+        public virtual User Manager { get; set; }
+        public virtual ICollection<User> Subordinates { get; set; }
 
     }
 }

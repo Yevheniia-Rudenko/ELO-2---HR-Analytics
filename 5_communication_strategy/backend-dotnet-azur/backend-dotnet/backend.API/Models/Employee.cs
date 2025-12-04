@@ -32,7 +32,7 @@ namespace backend.API.Models
         public int Education { get; set; }
 
         [StringLength(256)]
-        public int EducationField { get; set; }
+        public string EducationField { get; set; }
 
 
         //navigation properties

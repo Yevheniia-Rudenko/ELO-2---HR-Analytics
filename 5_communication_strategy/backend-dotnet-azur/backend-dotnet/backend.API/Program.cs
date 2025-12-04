@@ -1,3 +1,7 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using backend.API.Data;
+//using backend.API.Data;
 
 namespace backend.API
 {
@@ -6,7 +10,9 @@ namespace backend.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            builder.Services.AddDbContext<backendAPIContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("backendAPIContext") ?? throw new InvalidOperationException("Connection string 'backendAPIContext' not found.")));
+            
             // Add services to the container.
 
             builder.Services.AddControllers();

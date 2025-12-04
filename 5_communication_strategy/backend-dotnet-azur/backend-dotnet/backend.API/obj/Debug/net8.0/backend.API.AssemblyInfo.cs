@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("backend.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a0c409113fbabdafec10b98be881e084e5face20")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ec045605e94af8a95cf3333feee3654970af904c")]
 [assembly: System.Reflection.AssemblyProductAttribute("backend.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("backend.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
