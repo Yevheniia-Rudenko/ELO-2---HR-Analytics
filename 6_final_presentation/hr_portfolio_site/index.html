@@ -1043,10 +1043,60 @@
     <!-- Load Chart.js first -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
+    <!-- Inline Tab Switching - Guaranteed to work -->
+    <script>
+    console.log('🔧 Inline tab script loading...');
+    
+    // Simple tab switching function
+    function switchTab(tabName) {
+        console.log('🔄 Switching to:', tabName);
+        
+        // Hide all tabs
+        const allTabs = document.querySelectorAll('.tab-content');
+        const allLinks = document.querySelectorAll('.tab-link');
+        
+        allTabs.forEach(tab => tab.classList.remove('active'));
+        allLinks.forEach(link => link.classList.remove('active'));
+        
+        // Show selected tab
+        const targetTab = document.getElementById(tabName);
+        const targetLink = document.querySelector(`[data-tab="${tabName}"]`);
+        
+        if (targetTab) targetTab.classList.add('active');
+        if (targetLink) targetLink.classList.add('active');
+        
+        console.log('✅ Tab switched to:', tabName);
+    }
+    
+    // Setup tabs when DOM is ready
+    function setupTabs() {
+        console.log('🔗 Setting up tabs...');
+        const tabLinks = document.querySelectorAll('.tab-link');
+        console.log('Found', tabLinks.length, 'tab links');
+        
+        tabLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const tabName = this.getAttribute('data-tab');
+                switchTab(tabName);
+            });
+        });
+        
+        console.log('✅ Tabs setup complete');
+    }
+    
+    // Run when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupTabs);
+    } else {
+        setupTabs();
+    }
+    </script>
+    
     <!-- API Configuration (must load before app.js) -->
-    <script src="js/config.js?v=3"></script>
+    <script src="js/config.js?v=4"></script>
     
     <!-- Main Application -->
-    <script src="js/app.js?v=3"></script>
+    <script src="js/app.js?v=4"></script>
 </body>
 </html>

@@ -16,37 +16,8 @@ console.log(USE_API_BACKEND ? '✅ API Backend: Enabled' : '❌ API Backend: Dis
 
 const USE_GCP_INTEGRATION = false; // Legacy flag, not used
 
-// ==========================================
-// Early Tab Navigation Setup (Backup)
-// ==========================================
-function initializeTabsEarly() {
-    const links = document.querySelectorAll('.tab-link');
-    if (links.length === 0) return;
-    
-    console.log('⚡ Early tab setup:', links.length, 'links found');
-    links.forEach(link => {
-        link.onclick = function(e) {
-            e.preventDefault();
-            const tab = this.getAttribute('data-tab');
-            console.log('⚡ Early click:', tab);
-            
-            document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
-            this.classList.add('active');
-            const content = document.getElementById(tab);
-            if (content) content.classList.add('active');
-        };
-    });
-}
-
-// This runs immediately when script loads as a backup
-if (document.readyState === 'loading') {
-    console.log('⏳ Document still loading, will wait for DOMContentLoaded');
-} else {
-    console.log('⚡ Document already loaded, initializing tabs immediately');
-    setTimeout(initializeTabsEarly, 0);
-}
+// Note: Tab switching is handled by inline script in index.html
+// This ensures tabs work immediately, before all JS loads
 
 // ==========================================
 // LocalStorage Functions (for GitHub Pages)
@@ -121,57 +92,12 @@ function waitForChart() {
     });
 }
 
-// Tab Navigation - Initialize ASAP
-function initializeTabs() {
-    console.log('🔗 Initializing tab navigation...');
-    
-    const tabLinks = document.querySelectorAll('.tab-link');
-    const tabContents = document.querySelectorAll('.tab-content');
-    
-    console.log(`  Found ${tabLinks.length} tab links`);
-    console.log(`  Found ${tabContents.length} tab contents`);
-
-    if (tabLinks.length === 0) {
-        console.error('❌ No tab links found!');
-        return;
-    }
-
-    tabLinks.forEach((link, index) => {
-        const tabName = link.getAttribute('data-tab');
-        console.log(`  Tab ${index + 1}: ${tabName}`);
-        
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const targetTab = this.getAttribute('data-tab');
-            console.log(`🔄 Tab clicked: ${targetTab}`);
-
-            // Remove active class from all tabs and links
-            tabLinks.forEach(l => l.classList.remove('active'));
-            tabContents.forEach(c => c.classList.remove('active'));
-
-            // Add active class to clicked link and corresponding content
-            this.classList.add('active');
-            const targetContent = document.getElementById(targetTab);
-            if (targetContent) {
-                targetContent.classList.add('active');
-                console.log(`✅ Tab activated: ${targetTab}`);
-            } else {
-                console.error(`❌ Tab content not found: ${targetTab}`);
-            }
-        }, true); // Use capture phase
-    });
-    
-    console.log('✅ Tab navigation initialized');
-}
-
-// Initialize tabs immediately when DOM is ready
+// Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', async function() {
-    console.log('🚀 DOM Content Loaded');
+    console.log('🚀 DOM Content Loaded - App Initialization');
     
-    // Initialize tabs FIRST - before anything else
-    initializeTabs();
+    // Note: Tab switching is already handled by inline script in index.html
+    // No need to initialize tabs here
     
     // Wait for Chart.js to be ready
     await waitForChart();
