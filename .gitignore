@@ -59,7 +59,7 @@ Thumbs.db
 
 # Visual Studio ConnectionStrings
 #*/appsettings.json
-appsettings.json
+###appsettings.json
 
 # Visual Studio Migrations
 Migrations/
@@ -67,5 +67,11 @@ Migrations/
 # Files built by Visual Studio
 # Visual Studio obj folder (debug process)
 #*/obj
-*.obj
-*.bin
+###*.obj
+###*.bin
+
+# temporary of other supporting files
+###*drawio.dtmp
+*drawio.bkp
+###.$HRSystem_ER Diagram.drawio.dtmp
+###.$HRSystem_ER Diagram.drawio.bkp
