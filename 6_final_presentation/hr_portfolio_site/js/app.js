@@ -17,6 +17,38 @@ console.log(USE_API_BACKEND ? '✅ API Backend: Enabled' : '❌ API Backend: Dis
 const USE_GCP_INTEGRATION = false; // Legacy flag, not used
 
 // ==========================================
+// Early Tab Navigation Setup (Backup)
+// ==========================================
+// This runs immediately when script loads as a backup
+if (document.readyState === 'loading') {
+    console.log('⏳ Document still loading, will wait for DOMContentLoaded');
+} else {
+    console.log('⚡ Document already loaded, initializing tabs immediately');
+    setTimeout(initializeTabsEarly, 0);
+}
+
+function initializeTabsEarly() {
+    const links = document.querySelectorAll('.tab-link');
+    if (links.length === 0) return;
+    
+    console.log('⚡ Early tab setup:', links.length, 'links found');
+    links.forEach(link => {
+        link.onclick = function(e) {
+            e.preventDefault();
+            const tab = this.getAttribute('data-tab');
+            console.log('⚡ Early click:', tab);
+            
+            document.querySelectorAll('.tab-link').forEach(l => l.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            this.classList.add('active');
+            const content = document.getElementById(tab);
+            if (content) content.classList.add('active');
+        };
+    });
+}
+
+// ==========================================
 // LocalStorage Functions (for GitHub Pages)
 // ==========================================
 function saveQuestionnaireToLocal(data) {
@@ -89,27 +121,31 @@ function waitForChart() {
     });
 }
 
-// Tab Navigation
-document.addEventListener('DOMContentLoaded', async function() {
-    console.log('🚀 DOM Content Loaded');
+// Tab Navigation - Initialize ASAP
+function initializeTabs() {
+    console.log('🔗 Initializing tab navigation...');
     
-    // Wait for Chart.js to be ready
-    await waitForChart();
-    console.log('📊 Chart.js is ready');
-    
-    // Tab switching functionality
     const tabLinks = document.querySelectorAll('.tab-link');
     const tabContents = document.querySelectorAll('.tab-content');
     
-    console.log(`🔗 Found ${tabLinks.length} tab links`);
-    console.log(`📄 Found ${tabContents.length} tab contents`);
+    console.log(`  Found ${tabLinks.length} tab links`);
+    console.log(`  Found ${tabContents.length} tab contents`);
+
+    if (tabLinks.length === 0) {
+        console.error('❌ No tab links found!');
+        return;
+    }
 
     tabLinks.forEach((link, index) => {
-        console.log(`  Tab ${index + 1}: ${link.getAttribute('data-tab')}`);
+        const tabName = link.getAttribute('data-tab');
+        console.log(`  Tab ${index + 1}: ${tabName}`);
+        
         link.addEventListener('click', function(e) {
             e.preventDefault();
+            e.stopPropagation();
+            
             const targetTab = this.getAttribute('data-tab');
-            console.log(`🔄 Switching to tab: ${targetTab}`);
+            console.log(`🔄 Tab clicked: ${targetTab}`);
 
             // Remove active class from all tabs and links
             tabLinks.forEach(l => l.classList.remove('active'));
@@ -120,12 +156,26 @@ document.addEventListener('DOMContentLoaded', async function() {
             const targetContent = document.getElementById(targetTab);
             if (targetContent) {
                 targetContent.classList.add('active');
-                console.log(`✅ Activated tab: ${targetTab}`);
+                console.log(`✅ Tab activated: ${targetTab}`);
             } else {
                 console.error(`❌ Tab content not found: ${targetTab}`);
             }
-        });
+        }, true); // Use capture phase
     });
+    
+    console.log('✅ Tab navigation initialized');
+}
+
+// Initialize tabs immediately when DOM is ready
+document.addEventListener('DOMContentLoaded', async function() {
+    console.log('🚀 DOM Content Loaded');
+    
+    // Initialize tabs FIRST - before anything else
+    initializeTabs();
+    
+    // Wait for Chart.js to be ready
+    await waitForChart();
+    console.log('📊 Chart.js is ready');
 
     console.log('📊 Starting chart initialization...');
     // Initialize charts
