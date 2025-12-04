@@ -58,10 +58,14 @@ Thumbs.db
 .vs/
 
 # Visual Studio ConnectionStrings
-*/appsettings.json
+#*/appsettings.json
+appsettings.json
 
 # Visual Studio Migrations
 Migrations/
 
-#Visual Studio obj folder (debug process)
-*/obj
+# Files built by Visual Studio
+# Visual Studio obj folder (debug process)
+#*/obj
+*.obj
+*.bin
