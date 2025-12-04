@@ -19,14 +19,6 @@ const USE_GCP_INTEGRATION = false; // Legacy flag, not used
 // ==========================================
 // Early Tab Navigation Setup (Backup)
 // ==========================================
-// This runs immediately when script loads as a backup
-if (document.readyState === 'loading') {
-    console.log('⏳ Document still loading, will wait for DOMContentLoaded');
-} else {
-    console.log('⚡ Document already loaded, initializing tabs immediately');
-    setTimeout(initializeTabsEarly, 0);
-}
-
 function initializeTabsEarly() {
     const links = document.querySelectorAll('.tab-link');
     if (links.length === 0) return;
@@ -46,6 +38,14 @@ function initializeTabsEarly() {
             if (content) content.classList.add('active');
         };
     });
+}
+
+// This runs immediately when script loads as a backup
+if (document.readyState === 'loading') {
+    console.log('⏳ Document still loading, will wait for DOMContentLoaded');
+} else {
+    console.log('⚡ Document already loaded, initializing tabs immediately');
+    setTimeout(initializeTabsEarly, 0);
 }
 
 // ==========================================
