@@ -421,7 +421,7 @@
               </div>
               <button
                 class="btn btn-small btn-view"
-                onclick="viewAppraisal('EMP003')"
+                onclick="viewAppraisal('EMP003', 'Michael Chen')"
               >
                 View
               </button>
@@ -689,6 +689,18 @@
             <button onclick="exportDataAsCSV()" class="btn btn-small">📊 Export as CSV</button>
             <button onclick="viewAllData()" class="btn btn-small" style="background: var(--primary-color);">👁️ View All Data</button>
             <button onclick="clearAllData()" class="btn btn-small" style="background: #ef4444;">🗑️ Clear All Data</button>
+          </div>
+        </div>
+
+        <!-- Submission History -->
+        <div style="margin-top: 40px; margin-bottom: 20px;">
+          <h3 style="color: #1e40af; font-size: 18px; font-weight: 700;">📜 Submission History</h3>
+          <p style="color: #334155; font-size: 14px;">View all questionnaires and appraisals submitted</p>
+        </div>
+
+        <div id="submissionHistory" style="background: white; padding: 25px; border-radius: 12px; box-shadow: var(--shadow-md);">
+          <div id="historyContent">
+            <p style="text-align: center; color: #94a3b8; padding: 20px;">No submissions yet. Submit a survey or appraisal to see history.</p>
           </div>
         </div>
       </section>
@@ -1094,9 +1106,9 @@
     </script>
     
     <!-- API Configuration (must load before app.js) -->
-    <script src="js/config.js?v=4"></script>
+    <script src="js/config.js?v=5"></script>
     
     <!-- Main Application -->
-    <script src="js/app.js?v=4"></script>
+    <script src="js/app.js?v=5"></script>
 </body>
 </html>

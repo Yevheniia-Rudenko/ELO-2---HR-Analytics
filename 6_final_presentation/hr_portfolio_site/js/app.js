@@ -27,6 +27,11 @@ function saveQuestionnaireToLocal(data) {
     questionnaires.push(data);
     localStorage.setItem('hr_questionnaires', JSON.stringify(questionnaires));
     console.log('✅ Questionnaire saved to localStorage:', data);
+    
+    // Update history display
+    if (typeof updateSubmissionHistory === 'function') {
+        updateSubmissionHistory();
+    }
 }
 
 function saveAppraisalToLocal(data) {
@@ -34,6 +39,11 @@ function saveAppraisalToLocal(data) {
     appraisals.push(data);
     localStorage.setItem('hr_appraisals', JSON.stringify(appraisals));
     console.log('✅ Appraisal saved to localStorage:', data);
+    
+    // Update history display
+    if (typeof updateSubmissionHistory === 'function') {
+        updateSubmissionHistory();
+    }
 }
 
 function saveEmployeeToLocal(employeeData) {
@@ -469,6 +479,11 @@ function openAppraisalForm(employeeId, employeeName) {
     
     console.log(`✅ No existing appraisal found, opening form`);
     
+    // Switch to appraisal tab
+    if (typeof switchTab === 'function') {
+        switchTab('appraisal');
+    }
+    
     // Populate form
     document.getElementById('appraisalEmployeeId').value = employeeId;
     document.getElementById('employeeName').textContent = employeeName;
@@ -483,55 +498,42 @@ function openAppraisalForm(employeeId, employeeName) {
     document.getElementById('appraisalEmployeeId').value = employeeId;
 
     // Scroll to form
-    document.getElementById('appraisalFormSection').scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-    });
+    setTimeout(() => {
+        document.getElementById('appraisalFormSection').scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }, 300);
 }
+
+// View appraisal details
+function viewAppraisal(employeeId, employeeName) {
+    console.log(`👁️ Viewing appraisal for ${employeeName} (${employeeId})`);
+    
+    const localData = getLocalData();
+    const appraisal = localData.appraisals.find(a => a.employeeId === employeeId);
+    
+    if (appraisal) {
+        alert(`📊 Appraisal Details for ${employeeName}\n\n` +
+              `Employee ID: ${employeeId}\n` +
+              `Performance Rating: ${appraisal.performanceRating}/5\n` +
+              `Communication: ${appraisal.communication}/5\n` +
+              `Teamwork: ${appraisal.teamwork}/5\n` +
+              `Technical Skills: ${appraisal.technicalSkills}/5\n` +
+              `Comments: ${appraisal.comments || 'N/A'}\n` +
+              `Submitted: ${new Date(appraisal.submissionDate).toLocaleDateString()}`);
+    } else {
+        alert(`⚠️ No appraisal found for ${employeeName}`);
+    }
+}
+
+// Make functions globally accessible
+window.openAppraisalForm = openAppraisalForm;
+window.viewAppraisal = viewAppraisal;
 
 function closeAppraisalForm() {
     document.getElementById('appraisalFormSection').style.display = 'none';
     document.getElementById('appraisalForm').reset();
-}
-
-function viewAppraisal(employeeId) {
-    // Get all appraisals for this employee from localStorage
-    const localData = getLocalData();
-    const appraisals = localData.appraisals.filter(a => a.employeeId === employeeId);
-    
-    if (appraisals.length === 0) {
-        alert('📋 No appraisal data found for this employee.');
-        return;
-    }
-    
-    // Show the most recent appraisal
-    const latestAppraisal = appraisals[appraisals.length - 1];
-    const date = new Date(latestAppraisal.appraisalDate).toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-    const rating = latestAppraisal.performanceRating;
-    const ratingText = rating === 1 ? '⭐ Low' : 
-                       rating === 2 ? '⭐⭐ Good' : 
-                       rating === 3 ? '⭐⭐⭐ Excellent' : 
-                       '⭐⭐⭐⭐ Outstanding';
-    
-    const message = `📋 Performance Appraisal\n\n` +
-          `👤 Employee ID: ${employeeId}\n` +
-          `📅 Appraisal Date: ${date}\n` +
-          `⭐ Performance Rating: ${ratingText}\n\n` +
-          `Total Appraisals on Record: ${appraisals.length}`;
-    
-    alert(message);
-} +
-              `⭐ Performance Rating: ${rating} - ${ratingText}\n\n` +
-              `✅ Appraisal completed and saved to BigQuery`);
-    } else {
-        alert(`No appraisal found for employee ${employeeId}`);
-    }
 }
 
 function updateEmployeeStatus(employeeId) {
@@ -545,6 +547,9 @@ function updateEmployeeStatus(employeeId) {
         
         const statusBadge = employeeCard.querySelector('.status');
         const button = employeeCard.querySelector('.btn');
+        
+        // Get employee name from card
+        const employeeName = employeeCard.querySelector('h4')?.textContent || 'Employee';
         
         if (statusBadge) {
             console.log(`🏷️ Updating status badge from "${statusBadge.textContent}" to "Completed"`);
@@ -560,7 +565,7 @@ function updateEmployeeStatus(employeeId) {
             button.classList.remove('btn-small');
             button.classList.add('btn-view');
             button.classList.add('btn-small');
-            button.setAttribute('onclick', `viewAppraisal('${employeeId}')`);
+            button.setAttribute('onclick', `viewAppraisal('${employeeId}', '${employeeName}')`);
         }
         
         // Update status in localStorage
@@ -617,7 +622,7 @@ function loadEmployeesFromLocal() {
         const buttonClass = status === 'completed' ? 'btn-view' : 'btn-primary';
         const buttonText = status === 'completed' ? 'View' : 'Evaluate';
         const buttonAction = status === 'completed' ? 
-            `viewAppraisal('${emp.employeeId}')` : 
+            `viewAppraisal('${emp.employeeId}', '${emp.name}')` : 
             `openAppraisalForm('${emp.employeeId}', '${emp.name}')`;
         
         newCard.innerHTML = `
@@ -1362,19 +1367,135 @@ async function clearAllData() {
         return;
     }
     
-    alert('ℹ️ This feature requires backend implementation. For now, manually delete data/*.json files.');
+    localStorage.removeItem('hr_questionnaires');
+    localStorage.removeItem('hr_appraisals');
+    localStorage.removeItem('hr_employees');
+    
+    alert('✅ All local data has been cleared!');
+    location.reload();
 }
+
+// Export data functions
+function exportDataAsJSON() {
+    const data = getLocalData();
+    const jsonStr = JSON.stringify(data, null, 2);
+    downloadFile(jsonStr, 'hr-analytics-data.json', 'application/json');
+    alert('✅ Data exported as JSON!');
+}
+
+function exportDataAsCSV() {
+    const data = getLocalData();
+    
+    // Combine questionnaires and appraisals
+    let csv = 'Type,Employee ID,Date,Data\n';
+    
+    data.questionnaires.forEach(q => {
+        csv += `Questionnaire,${q.employeeId},${q.submissionDate},"Env:${q.environmentSatisfaction} Job:${q.jobSatisfaction} Rel:${q.relationshipSatisfaction} WLB:${q.workLifeBalance}"\n`;
+    });
+    
+    data.appraisals.forEach(a => {
+        csv += `Appraisal,${a.employeeId},${a.submissionDate},"Perf:${a.performanceRating} Comm:${a.communication} Team:${a.teamwork} Tech:${a.technicalSkills}"\n`;
+    });
+    
+    downloadFile(csv, 'hr-analytics-data.csv', 'text/csv');
+    alert('✅ Data exported as CSV!');
+}
+
+function downloadFile(content, filename, contentType) {
+    const blob = new Blob([content], { type: contentType });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(url);
+}
+
+// Update submission history
+function updateSubmissionHistory() {
+    const historyContent = document.getElementById('historyContent');
+    if (!historyContent) return;
+    
+    const data = getLocalData();
+    const total = data.questionnaires.length + data.appraisals.length;
+    
+    if (total === 0) {
+        historyContent.innerHTML = '<p style="text-align: center; color: #94a3b8; padding: 20px;">No submissions yet. Submit a survey or appraisal to see history.</p>';
+        return;
+    }
+    
+    let html = `<div style="margin-bottom: 20px;"><strong>${total} Total Submissions</strong> (${data.questionnaires.length} Surveys, ${data.appraisals.length} Appraisals)</div>`;
+    
+    // Questionnaires
+    if (data.questionnaires.length > 0) {
+        html += '<h4 style="color: #3b82f6; margin-top: 20px;">📝 Employee Surveys</h4>';
+        html += '<div style="display: grid; gap: 12px; margin-top: 12px;">';
+        data.questionnaires.forEach((q, index) => {
+            const date = new Date(q.submissionDate).toLocaleString();
+            html += `
+                <div style="background: #f1f5f9; padding: 15px; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div>
+                            <strong>Employee ${q.employeeId}</strong>
+                            <p style="margin: 5px 0; font-size: 14px; color: #64748b;">${date}</p>
+                            <p style="margin: 8px 0 0 0; font-size: 14px;">
+                                Env: ${q.environmentSatisfaction}/4 | Job: ${q.jobSatisfaction}/4 | 
+                                Rel: ${q.relationshipSatisfaction}/4 | WLB: ${q.workLifeBalance}/4
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        html += '</div>';
+    }
+    
+    // Appraisals
+    if (data.appraisals.length > 0) {
+        html += '<h4 style="color: #14b8a6; margin-top: 25px;">⭐ Performance Appraisals</h4>';
+        html += '<div style="display: grid; gap: 12px; margin-top: 12px;">';
+        data.appraisals.forEach((a, index) => {
+            const date = new Date(a.submissionDate).toLocaleString();
+            html += `
+                <div style="background: #f0fdfa; padding: 15px; border-radius: 8px; border-left: 4px solid #14b8a6;">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div style="flex: 1;">
+                            <strong>Employee ${a.employeeId}</strong>
+                            <p style="margin: 5px 0; font-size: 14px; color: #64748b;">${date}</p>
+                            <p style="margin: 8px 0 0 0; font-size: 14px;">
+                                Performance: ${a.performanceRating}/5 | Communication: ${a.communication}/5 | 
+                                Teamwork: ${a.teamwork}/5 | Technical: ${a.technicalSkills}/5
+                            </p>
+                            ${a.comments ? `<p style="margin: 8px 0 0 0; font-size: 13px; font-style: italic; color: #475569;">"${a.comments}"</p>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        html += '</div>';
+    }
+    
+    historyContent.innerHTML = html;
+}
+
+// Make functions global
+window.exportDataAsJSON = exportDataAsJSON;
+window.exportDataAsCSV = exportDataAsCSV;
+window.viewAllData = viewAllData;
+window.clearAllData = clearAllData;
 
 // Initialize Live Insights when tab is opened
 document.addEventListener('DOMContentLoaded', function() {
     checkAPIStatus();
     initializeLiveCharts();
+    updateSubmissionHistory();
     
     // Refresh live insights every 30 seconds
     setInterval(() => {
         const liveTab = document.getElementById('data-insights');
         if (liveTab && liveTab.classList.contains('active')) {
             refreshLiveInsights();
+            updateSubmissionHistory();
         }
     }, 30000);
     
@@ -1383,7 +1504,10 @@ document.addEventListener('DOMContentLoaded', function() {
     tabLinks.forEach(link => {
         link.addEventListener('click', function() {
             if (this.getAttribute('data-tab') === 'data-insights') {
-                setTimeout(refreshLiveInsights, 100);
+                setTimeout(() => {
+                    refreshLiveInsights();
+                    updateSubmissionHistory();
+                }, 100);
             }
         });
     });
