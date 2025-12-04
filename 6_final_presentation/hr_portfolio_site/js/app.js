@@ -70,11 +70,17 @@ function showSuccessMessage(formType) {
 // Wait for Chart.js to load
 function waitForChart() {
     return new Promise((resolve) => {
+        console.log('⏳ Waiting for Chart.js to load...');
+        console.log('Chart available:', typeof Chart !== 'undefined');
+        
         if (typeof Chart !== 'undefined') {
+            console.log('✅ Chart.js is ready!');
             resolve();
         } else {
+            console.log('⚠️ Chart.js not loaded yet, waiting...');
             const checkInterval = setInterval(() => {
                 if (typeof Chart !== 'undefined') {
+                    console.log('✅ Chart.js loaded successfully!');
                     clearInterval(checkInterval);
                     resolve();
                 }
@@ -85,8 +91,11 @@ function waitForChart() {
 
 // Tab Navigation
 document.addEventListener('DOMContentLoaded', async function() {
+    console.log('🚀 DOM Content Loaded');
+    
     // Wait for Chart.js to be ready
     await waitForChart();
+    console.log('📊 Starting chart initialization...');
     
     // Tab switching functionality
     const tabLinks = document.querySelectorAll('.tab-link');
@@ -129,16 +138,17 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Charts Initialization
 // ==========================================
 function initializeCharts() {
-    console.log('Initializing charts...');
-    console.log('Chart available:', typeof Chart !== 'undefined');
+    console.log('📊 Initializing charts...');
+    console.log('Chart.js available:', typeof Chart !== 'undefined');
+    console.log('Chart version:', typeof Chart !== 'undefined' ? Chart.version : 'N/A');
     
     // Chart 1: Attrition by Department
     const deptCtx = document.getElementById('attritionDeptChart');
-    console.log('Department chart canvas:', deptCtx);
+    console.log('Department chart canvas found:', !!deptCtx);
     
     if (deptCtx) {
         try {
-            new Chart(deptCtx, {
+            const deptChart = new Chart(deptCtx, {
                 type: 'bar',
                 data: {
                     labels: ['Sales', 'R&D', 'HR'],
@@ -176,16 +186,21 @@ function initializeCharts() {
                     }
                 }
             });
-            console.log('Department chart created successfully');
+            console.log('✅ Department chart created successfully');
         } catch (error) {
-            console.error('Error creating department chart:', error);
+            console.error('❌ Error creating department chart:', error);
         }
+    } else {
+        console.warn('⚠️ Department chart canvas not found!');
     }
 
     // Chart 2: Attrition by Age Group
     const ageCtx = document.getElementById('attritionAgeChart');
+    console.log('Age chart canvas found:', !!ageCtx);
+    
     if (ageCtx) {
-        new Chart(ageCtx, {
+        try {
+            const ageChart = new Chart(ageCtx, {
             type: 'line',
             data: {
                 labels: ['18-25', '26-35', '36-45', '46-55', '55+'],
@@ -220,12 +235,17 @@ function initializeCharts() {
                 }
             }
         });
+        console.log('✅ Age chart created successfully');
+    } else {
+        console.warn('⚠️ Age chart canvas not found!');
     }
 
     // Chart 3: Overtime Impact
     const overtimeCtx = document.getElementById('overtimeChart');
+    console.log('Overtime chart canvas found:', !!overtimeCtx);
     if (overtimeCtx) {
-        new Chart(overtimeCtx, {
+        try {
+            const overtimeChart = new Chart(overtimeCtx, {
             type: 'doughnut',
             data: {
                 labels: ['Overtime - Left', 'Overtime - Stayed', 'No Overtime - Left', 'No Overtime - Stayed'],
@@ -250,12 +270,20 @@ function initializeCharts() {
                 }
             }
         });
+        console.log('✅ Overtime chart created successfully');
+        } catch (error) {
+            console.error('❌ Error creating overtime chart:', error);
+        }
+    } else {
+        console.warn('⚠️ Overtime chart canvas not found!');
     }
 
     // Chart 4: Work-Life Balance Distribution
     const wlbCtx = document.getElementById('workLifeBalanceChart');
+    console.log('Work-Life Balance chart canvas found:', !!wlbCtx);
     if (wlbCtx) {
-        new Chart(wlbCtx, {
+        try {
+            const wlbChart = new Chart(wlbCtx, {
             type: 'bar',
             data: {
                 labels: ['Bad (1)', 'Good (2)', 'Better (3)', 'Best (4)'],
@@ -292,7 +320,15 @@ function initializeCharts() {
                 }
             }
         });
+        console.log('✅ Work-Life Balance chart created successfully');
+        } catch (error) {
+            console.error('❌ Error creating work-life balance chart:', error);
+        }
+    } else {
+        console.warn('⚠️ Work-Life Balance chart canvas not found!');
     }
+    
+    console.log('📊 Chart initialization complete');
 }
 
 // ==========================================
