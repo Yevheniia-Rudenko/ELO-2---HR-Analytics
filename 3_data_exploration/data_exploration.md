@@ -1,5 +1,10 @@
 # HR Employee Attrition - Data Exploration- What the Data Tells Us
 
+Dataset: HR-Employee-Attrition.csv
+Rows: 1470
+Columns: 35
+@Majdadel20 04.12.2025
+
 ## The Big Picture
 
 We've been digging into our employee data to understand who's leaving and why. Looking at 1,470 employee records, we found some clear patterns that can help us tackle our turnover problem.
