@@ -251,16 +251,20 @@ function initializeCharts() {
                 }
             }
         });
-        console.log('✅ Age chart created successfully');
+        console.log('  ✅ Age chart created successfully');
+        } catch (error) {
+            console.error('  ❌ Error creating age chart:', error);
+        }
     } else {
-        console.warn('⚠️ Age chart canvas not found!');
+        console.warn('  ⚠️ Age chart canvas element not found');
     }
 
     // Chart 3: Overtime Impact
     const overtimeCtx = document.getElementById('overtimeChart');
-    console.log('Overtime chart canvas found:', !!overtimeCtx);
+    console.log('  🔍 Overtime chart canvas:', overtimeCtx ? 'FOUND' : 'NOT FOUND');
     if (overtimeCtx) {
         try {
+            console.log('  📊 Creating overtime chart...');
             const overtimeChart = new Chart(overtimeCtx, {
             type: 'doughnut',
             data: {
@@ -286,19 +290,20 @@ function initializeCharts() {
                 }
             }
         });
-        console.log('✅ Overtime chart created successfully');
+        console.log('  ✅ Overtime chart created successfully');
         } catch (error) {
-            console.error('❌ Error creating overtime chart:', error);
+            console.error('  ❌ Error creating overtime chart:', error);
         }
     } else {
-        console.warn('⚠️ Overtime chart canvas not found!');
+        console.warn('  ⚠️ Overtime chart canvas element not found');
     }
 
     // Chart 4: Work-Life Balance Distribution
     const wlbCtx = document.getElementById('workLifeBalanceChart');
-    console.log('Work-Life Balance chart canvas found:', !!wlbCtx);
+    console.log('  🔍 Work-Life Balance chart canvas:', wlbCtx ? 'FOUND' : 'NOT FOUND');
     if (wlbCtx) {
         try {
+            console.log('  📊 Creating work-life balance chart...');
             const wlbChart = new Chart(wlbCtx, {
             type: 'bar',
             data: {
@@ -336,15 +341,15 @@ function initializeCharts() {
                 }
             }
         });
-        console.log('✅ Work-Life Balance chart created successfully');
+        console.log('  ✅ Work-Life Balance chart created successfully');
         } catch (error) {
-            console.error('❌ Error creating work-life balance chart:', error);
+            console.error('  ❌ Error creating work-life balance chart:', error);
         }
     } else {
-        console.warn('⚠️ Work-Life Balance chart canvas not found!');
+        console.warn('  ⚠️ Work-Life Balance chart canvas element not found');
     }
     
-    console.log('📊 Chart initialization complete');
+    console.log('✅ Chart initialization complete!');
 }
 
 // ==========================================
