@@ -380,6 +380,11 @@ function setupFormHandlers() {
             // Save to localStorage (works on GitHub Pages)
             saveAppraisalToLocal(formData);
             
+            // Close form and update status immediately
+            document.getElementById('appraisalSuccess').style.display = 'block';
+            document.getElementById('appraisalFormSection').style.display = 'none';
+            updateEmployeeStatus(formData.employeeId);
+            
             // Send to backend API (only on localhost)
             if (USE_API_BACKEND) {
                 fetch(`${API_URL}/appraisal`, {
@@ -394,27 +399,15 @@ function setupFormHandlers() {
                 .then(data => {
                     if (data.success) {
                         console.log('✅ Appraisal saved to database:', data);
-                        showSuccessMessage('appraisal');
-                        updateEmployeeStatus(formData.employeeId);
                         updateLiveInsightsCharts();
                     } else {
                         console.error('❌ Error saving appraisal:', data.error);
-                        alert('Error saving appraisal. Please try again.');
                     }
                 })
                 .catch(error => {
                     console.error('❌ Network error:', error);
-                    console.log('⚠️ Make sure API server is running: python3 simple_api.py');
-                    showSuccessMessage('appraisal');
-                    document.getElementById('appraisalSuccess').style.display = 'block';
-                    document.getElementById('appraisalFormSection').style.display = 'none';
-                    updateEmployeeStatus(formData.employeeId);
+                    console.log('⚠️ Appraisal saved locally but not synced to API');
                 });
-            } else {
-                // Demo mode
-                document.getElementById('appraisalSuccess').style.display = 'block';
-                document.getElementById('appraisalFormSection').style.display = 'none';
-                updateEmployeeStatus(formData.employeeId);
             }
 
             // Optional GCP Integration
@@ -429,6 +422,20 @@ function setupFormHandlers() {
 // Appraisal Functions
 // ==========================================
 function openAppraisalForm(employeeId, employeeName) {
+    console.log(`📝 Opening appraisal form for ${employeeName} (${employeeId})`);
+    
+    // Check if employee already has appraisal
+    const localData = getLocalData();
+    const hasAppraisal = localData.appraisals.some(a => a.employeeId === employeeId);
+    
+    if (hasAppraisal) {
+        console.log(`⚠️ Appraisal already exists for ${employeeId}`);
+        alert(`⚠️ Appraisal already submitted for ${employeeName}!\n\nThis employee's performance review has already been completed.\nUse the "View" button to see the appraisal details.`);
+        return;
+    }
+    
+    console.log(`✅ No existing appraisal found, opening form`);
+    
     // Populate form
     document.getElementById('appraisalEmployeeId').value = employeeId;
     document.getElementById('employeeName').textContent = employeeName;
@@ -455,28 +462,71 @@ function closeAppraisalForm() {
 }
 
 function viewAppraisal(employeeId) {
-    // In production, this would fetch data from backend
-    alert(`Viewing appraisal for employee ${employeeId}\n\nThis would show the completed appraisal details.`);
+    // Get all appraisals for this employee from localStorage
+    const localData = getLocalData();
+    const appraisals = localData.appraisals.filter(a => a.employeeId === employeeId);
+    
+    if (appraisals.length === 0) {
+        alert('📋 No appraisal data found for this employee.');
+        return;
+    }
+    
+    // Show the most recent appraisal
+    const latestAppraisal = appraisals[appraisals.length - 1];
+    const date = new Date(latestAppraisal.appraisalDate).toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+    const rating = latestAppraisal.performanceRating;
+    const ratingText = rating === 1 ? '⭐ Low' : 
+                       rating === 2 ? '⭐⭐ Good' : 
+                       rating === 3 ? '⭐⭐⭐ Excellent' : 
+                       '⭐⭐⭐⭐ Outstanding';
+    
+    const message = `📋 Performance Appraisal\n\n` +
+          `👤 Employee ID: ${employeeId}\n` +
+          `📅 Appraisal Date: ${date}\n` +
+          `⭐ Performance Rating: ${ratingText}\n\n` +
+          `Total Appraisals on Record: ${appraisals.length}`;
+    
+    alert(message);
+} +
+              `⭐ Performance Rating: ${rating} - ${ratingText}\n\n` +
+              `✅ Appraisal completed and saved to BigQuery`);
+    } else {
+        alert(`No appraisal found for employee ${employeeId}`);
+    }
 }
 
 function updateEmployeeStatus(employeeId) {
+    console.log(`🔄 Updating status for employee: ${employeeId}`);
+    
     // Find employee card by data-employee-id attribute
     const employeeCard = document.querySelector(`.employee-card[data-employee-id="${employeeId}"]`);
     
     if (employeeCard) {
+        console.log(`✅ Found employee card for ${employeeId}`);
+        
         const statusBadge = employeeCard.querySelector('.status');
         const button = employeeCard.querySelector('.btn');
         
         if (statusBadge) {
+            console.log(`🏷️ Updating status badge from "${statusBadge.textContent}" to "Completed"`);
             statusBadge.textContent = 'Completed';
             statusBadge.classList.remove('pending');
             statusBadge.classList.add('completed');
         }
         
         if (button) {
+            console.log(`🔘 Updating button from "${button.textContent}" to "View"`);
             button.textContent = 'View';
             button.classList.remove('btn-primary');
+            button.classList.remove('btn-small');
             button.classList.add('btn-view');
+            button.classList.add('btn-small');
             button.setAttribute('onclick', `viewAppraisal('${employeeId}')`);
         }
         
@@ -485,7 +535,8 @@ function updateEmployeeStatus(employeeId) {
         
         console.log(`✅ Updated employee status: ${employeeId} -> Completed`);
     } else {
-        console.warn(`⚠️ Employee card not found for ID: ${employeeId}`);
+        console.error(`❌ Employee card not found for ID: ${employeeId}`);
+        console.log(`Available employee cards:`, document.querySelectorAll('.employee-card'));
     }
 }
 
