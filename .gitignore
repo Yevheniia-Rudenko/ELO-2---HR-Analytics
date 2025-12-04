@@ -56,22 +56,16 @@ Thumbs.db
 
 # Visual Studio cache/options directory
 .vs/
-
-# Visual Studio ConnectionStrings
-#*/appsettings.json
-###appsettings.json
+# Files built by Visual Studio (debug process)
+obj/
+bin/
 
 # Visual Studio Migrations
 Migrations/
 
-# Files built by Visual Studio
-# Visual Studio obj folder (debug process)
-#*/obj
-###*.obj
-###*.bin
+# Visual Studio ConnectionStrings
+appsettings.json
 
-# temporary of other supporting files
-###*drawio.dtmp
+# temporary other supporting files
+*drawio.dtmp
 *drawio.bkp
-###.$HRSystem_ER Diagram.drawio.dtmp
-###.$HRSystem_ER Diagram.drawio.bkp
