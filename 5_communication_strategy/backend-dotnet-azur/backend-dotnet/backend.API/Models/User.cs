@@ -14,7 +14,7 @@ namespace backend.API.Models
         public String FirstName { get; set; }
         [Required]
         [StringLength(25)]
-        public String SecondName { get; set; }
+        public String LastName { get; set; }
 
         [ForeignKey("FK_UserManager_Id")]
         public int? ManagerId { get; set; }
