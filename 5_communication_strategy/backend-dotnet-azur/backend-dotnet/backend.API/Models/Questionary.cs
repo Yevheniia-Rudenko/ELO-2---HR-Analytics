@@ -21,7 +21,6 @@ namespace backend.API.Models
         [Required]
         public int WorkLifeBalance { get; set; }
 
-
         public DateTime? Date { get; set; }
 
         //navigation properties

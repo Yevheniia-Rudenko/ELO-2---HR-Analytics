@@ -29,6 +29,5 @@ namespace backend.API.Models
         public virtual ICollection<Questionary>? Questionaries { get; set; }
         public virtual User Manager { get; set; }
         public virtual ICollection<User> Subordinates { get; set; }
-
     }
 }

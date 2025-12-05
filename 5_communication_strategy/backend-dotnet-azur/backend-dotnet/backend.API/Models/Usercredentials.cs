@@ -12,7 +12,5 @@ namespace backend.API.Models
         public String Email { get; set; }
         [Required]
         public String Password { get; set; }
-
-
     }
 }

@@ -17,6 +17,7 @@ namespace backend.API.Data
         public DbSet<backend.API.Models.User> User { get; set; } = default!;
         public DbSet<backend.API.Models.Questionary> Questionary { get; set; } = default!;
         public DbSet<backend.API.Models.Apraisal> Apraisal { get; set; } = default!;
+        public DbSet<backend.API.Models.Employee> Employee { get; set; } = default!;
 
         public backendAPIContext(DbContextOptions<backendAPIContext> options): base(options)
         {

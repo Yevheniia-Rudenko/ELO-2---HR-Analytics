@@ -25,6 +25,5 @@ namespace backend.API.Models
         //navigation properties
         virtual public User Manager { get; set; }
         virtual public User Subordinate { get; set; }
-
     }
 }
